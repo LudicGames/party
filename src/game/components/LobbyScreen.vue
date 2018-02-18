@@ -7,21 +7,23 @@
 </template>
 
 <script>
-import {LudicComponent, method} from 'ludic-vue'
+import {LudicComponent} from 'ludic-vue'
 import LobbyCard from '@/game/components/LobbyCard'
 export default LudicComponent.extend({
   name: 'LobbyScreen',
-  components: {
-    'lobby-card': LobbyCard.$raw,
+  ludicComponents: {
+    LobbyCard,
   },
   data(){
     return {
     }
   },
   methods: {
-    ...method('onClick', (number)=>{
+  },
+  ludicMethods: {
+    onClick(number){
       return number
-    }),
+    },
   },
 })
 </script>

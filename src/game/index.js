@@ -10,8 +10,8 @@ export default class PartyApp extends LudicApp {
 
     this.screenManager = new ScreenManager(this)
     this.screenManager.addScreenEventListener(this)
-    // this.screenManager.addScreen(new LobbyScreen())
-    this.screenManager.addScreen(new GameScreen())
+    this.screenManager.addScreen(new LobbyScreen())
+    // this.screenManager.addScreen(new GameScreen())
   }
 
   onScreenFinished(screen, manager, data){
