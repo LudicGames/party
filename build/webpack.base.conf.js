@@ -27,12 +27,15 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '$ui': resolve('src/game/components/ui'),
+      '$systems': resolve('src/game/components/systems'),
+      '$entities': resolve('src/game/components/entities'),
     },
     modules: [resolve('node_modules'), 'node_modules'],
   },
   module: {
     noParse: [
-      /Box2D_v2/,
+      /Box2D_v2/, // needed for ludic-box2d
     ],
     rules: [
       {

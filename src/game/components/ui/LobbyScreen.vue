@@ -5,7 +5,7 @@
 
 <script>
 import {LudicComponent} from 'ludic-vue'
-import LobbyCard from '@/game/components/LobbyCard'
+import LobbyCard from '$ui/LobbyCard'
 export default LudicComponent.extend({
   name: 'LobbyScreen',
   ludicComponents: {

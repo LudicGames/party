@@ -6,7 +6,6 @@ import router from './router'
 
 import LudicVue from 'ludic-vue'
 
-
 Vue.config.productionTip = false
 Vue.use(LudicVue)
 

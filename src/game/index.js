@@ -3,6 +3,7 @@ import {UIText, UILayer} from 'ludic-vue'
 
 import LobbyScreen from '@/game/screens/lobbyScreen'
 import GameScreen from '@/game/screens/gameScreen'
+import KingScreen from '@/game/screens/kingScreen'
 
 export default class PartyApp extends LudicApp {
   constructor(cfg) {
@@ -10,8 +11,9 @@ export default class PartyApp extends LudicApp {
 
     this.screenManager = new ScreenManager(this)
     this.screenManager.addScreenEventListener(this)
-    this.screenManager.addScreen(new LobbyScreen())
+    // this.screenManager.addScreen(new LobbyScreen())
     // this.screenManager.addScreen(new GameScreen())
+    this.screenManager.addScreen(new KingScreen())
   }
 
   onScreenFinished(screen, manager, data){

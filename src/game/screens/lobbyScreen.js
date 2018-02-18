@@ -1,5 +1,5 @@
 import {Screen} from 'ludic'
-import LobbyScreenUI from '@/game/components/LobbyScreen'
+import LobbyScreenUI from '$ui/LobbyScreen'
 
 import {World} from 'ludic-box2d'
 
