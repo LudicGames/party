@@ -31,6 +31,9 @@ module.exports = {
     modules: [resolve('node_modules'), 'node_modules'],
   },
   module: {
+    noParse: [
+      /Box2D_v2/,
+    ],
     rules: [
       {
         test: /\.vue$/,

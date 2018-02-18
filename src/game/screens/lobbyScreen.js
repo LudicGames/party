@@ -1,23 +1,26 @@
 import {Screen} from 'ludic'
 import LobbyScreenUI from '@/game/components/LobbyScreen'
 
+import {World} from 'ludic-box2d'
+
 export default class LobbyScreen extends Screen {
   constructor(){
     super()
+    this.world = new World(0,-9.8)
   }
 
   onAddedToManager(manager){
     this.lobbyScreen = this.$mapMethods(new LobbyScreenUI(this.$app), {
-      'onClick': 'onClick',
+      'onReady': 'onReady',
     })
     this.$app.$ui.$children.push(this.lobbyScreen)
   }
 
-  onClick([component, number]){
-    console.log(number)
-    this.finish({
-      playerNum: number,
-    })
+  onReady([component, players]){
+    console.log(players)
+    // this.finish({
+    //   playerNum: number,
+    // })
   }
 
   onDestroy(){

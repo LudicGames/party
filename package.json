@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "box2d": "github:ludic/box2d",
     "ludic": "github:ludic/ludic",
     "ludic-box2d": "github:ludic/ludic-box2d",
     "ludic-vue": "github:ludic/ludic-vue",
