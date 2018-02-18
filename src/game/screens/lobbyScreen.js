@@ -7,14 +7,10 @@ export default class LobbyScreen extends Screen {
   }
 
   onAddedToManager(manager){
-    this.app = manager.$app
-
-    this.lobbyScreen = this.$mapMethods(new LobbyScreenUI(), {
+    this.lobbyScreen = this.$mapMethods(new LobbyScreenUI(this.$app), {
       'onClick': 'onClick',
     })
-    this.app.$ui.$children.push(this.lobbyScreen)
-
-
+    this.$app.$ui.$children.push(this.lobbyScreen)
   }
 
   onClick([component, number]){
@@ -26,12 +22,13 @@ export default class LobbyScreen extends Screen {
 
   onDestroy(){
     console.log('on onDestroy')
-    this.app.$ui.$children = []
+    this.$app.$ui.$children = []
   }
 
   update(time, delta){
-    let ctx = this.app.$context
+    let ctx = this.$app.$context
 
-    this.app.$canvas.clear('black')
+    this.$app.$input.update()
+    this.$app.$canvas.clear('black')
   }
 }
