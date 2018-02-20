@@ -9,9 +9,10 @@ export default class KingScreen extends Screen {
     super()
   }
 
-  onAddedToManager(manager){
+  onAddedToManager(){
     this.initWorld()
     this.initSystems()
+    this.initEntities()
   }
 
   initWorld(){
@@ -24,12 +25,9 @@ export default class KingScreen extends Screen {
     // this.world.SetDebugDraw(this.debugDraw)
 
     this.engine = new Engine()
-
-    this.platform = new Block(8,-8,7,1,'blue',this.world, true, -1, false)
   }
 
   initSystems(){
-
     // Clear
     this.clearSystem = new BaseSystem(true, -100, (delta)=>{
       this.$app.$canvas.clear()
@@ -37,38 +35,33 @@ export default class KingScreen extends Screen {
     this.engine.addSystem(this.clearSystem)
 
     // Camera
-    this.cameraSystem = new BaseSystem(true, 25, (delta)=>{
+    this.cameraSystem = new BaseSystem(true, -5, (delta)=>{
       this.camera.draw(this.$app.$context)
       this.camera.drawAxes(this.$app.$context)
     })
     this.engine.addSystem(this.cameraSystem)
 
     // Render
-    // this.renderSystem = new RenderSystem(true, 30, this.$app.$context)
-    // this.engine.addSystem(this.renderSystem)
+    this.renderSystem = new RenderSystem(this.$app.$context)
+    this.engine.addSystem(this.renderSystem)
 
   }
 
   initEntities(){
-
+    this.platform1 = new Block(8,-8,7,1,'blue',this.world, true, -1, false)
+    this.platform2 = new Block(8,-1,7,1,'orange',this.world, true, -1, true)
+    this.engine.addEntity(this.platform1)
+    this.engine.addEntity(this.platform2)
   }
 
   onDestroy(){
-    console.log('onDestroy - KingScreen')
+    // console.log('onDestroy - KingScreen')
     // this.$app.$ui.$children = []
   }
 
   update(delta, time){
-    let ctx = this.$app.$context
     this.world.step(delta)
     this.engine.update(delta, time)
-
-    // Remove later
-    ctx.save()
-    this.platform.draw(ctx)
-    ctx.restore()
-
-
     this.world.drawDebug(true)
   }
 }

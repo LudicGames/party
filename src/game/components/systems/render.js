@@ -1,27 +1,33 @@
 import {BaseSystem} from 'ein'
 
+const DEFAULTS = {
+  active: true,
+  priority: -1,
+  entityQuery: {
+    props: ['draw']
+  }
+}
+
 export default class RenderSystem extends BaseSystem {
-  constructor(active = true, priority = -1, ctx){
-    super(active, priority);
-    this.ctx = ctx;
-    this.entityProps = ['draw'];
+  constructor(ctx, cfg={}){
+    cfg = Object.assign(DEFAULTS, cfg)
+    super(cfg)
+    this.ctx = ctx
   }
 
-  //Overide
-  onEntityAdded(manager){
-    this.entities = manager.getEntitiesByProps(this.entityProps);
+  onEntityAdded(entity){
+    this.entities.push(entity)
   }
 
-  onEntityRemoved(manager){
-    this.entities = manager.getEntitiesByProps(this.entityProps);
+  onEntityRemoved(entity){
+    this.entities.splice(this.entities.indexOf(entity), 1)
   }
 
-  //Overide
-  update(delta){
+  update(){
     this.entities.forEach(entity => {
-      this.ctx.save();
-      entity.draw(this.ctx);
-      this.ctx.restore();
-    });
+      this.ctx.save()
+      entity.draw(this.ctx)
+      this.ctx.restore()
+    })
   }
-};
+}
