@@ -60,21 +60,15 @@ export default class KingScreen extends Screen {
 
   update(delta, time){
     let ctx = this.$app.$context
-    // this.$app.$canvas.clear('black')
     this.world.step(delta)
-
     this.engine.update(delta, time)
 
-    // draw our box
-    // this.boxes.forEach((box)=>{
-    //   ctx.save()
-    //   box.draw(ctx)
-    //   ctx.restore()
-    // })
-
+    // Remove later
     ctx.save()
     this.platform.draw(ctx)
     ctx.restore()
+
+
     this.world.drawDebug(true)
   }
 }
