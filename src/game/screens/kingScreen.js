@@ -2,11 +2,14 @@ import {Screen, Camera} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
 import Block from '$entities/block'
+import Player from '$entities/player'
 import RenderSystem from '$systems/render'
+import MovementSystem from '$systems/movement'
 
 export default class KingScreen extends Screen {
-  constructor(){
+  constructor(players){
     super()
+    this.players = players
   }
 
   onAddedToManager(){
@@ -19,7 +22,7 @@ export default class KingScreen extends Screen {
     this.camera = new Camera(this.$app.$canvas)
     this.camera.centerWorldToCamera()
 
-    this.world = new World(0,-9.8)
+    this.world = new World(0,0)
     this.debugDraw = DebugDraw.newDebugger(this.$app.$canvas)
     // this.debugDraw.SetFlags(DebugDraw.e_shapeBit)
     // this.world.SetDebugDraw(this.debugDraw)
@@ -45,8 +48,13 @@ export default class KingScreen extends Screen {
     this.renderSystem = new RenderSystem(this.$app.$context)
     this.engine.addSystem(this.renderSystem)
 
+    this.inputSystem = new BaseSystem(true, 1, ()=>{
+      this.$app.$input.update()
+    })
+    this.engine.addSystem(this.inputSystem)
 
-
+    this.movementSystem = new MovementSystem(this.$app)
+    this.engine.addSystem(this.movementSystem)
   }
 
   initEntities(){
@@ -54,6 +62,13 @@ export default class KingScreen extends Screen {
     // this.platform2 = new Block(8,-1,7,1,'orange',this.world, true, -1, true)
     this.engine.addEntity(this.platform1)
     // this.engine.addEntity(this.platform2)
+
+    this.players.forEach((player, index)=>{
+      if(player.ready){
+        player.entity = new Player({x:8, y: 3, width: 2, height: 2, color: player.color, world: this.world, gamepadIndex: index})
+        this.engine.addEntity(player.entity)
+      }
+    })
   }
 
   onDestroy(){

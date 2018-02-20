@@ -50,7 +50,6 @@ export default LudicComponent.extend({
       let player = this.players[gamepadIndex]
       if(!down){
         if(player.ready && !this.ready){
-          console.log(this.players)
           this.$ludicEmit('onReady', this.players)
           this.ready = true
         } else {
