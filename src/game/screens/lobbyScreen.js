@@ -13,19 +13,17 @@ export default class LobbyScreen extends Screen {
     this.lobbyScreen = this.$mapMethods(new LobbyScreenUI(this.$app), {
       'onReady': 'onReady',
     })
-    this.$app.$ui.$children.push(this.lobbyScreen)
+    this.$app.$ui.$refs.lobby = this.lobbyScreen
   }
 
   onReady([component, players]){
-    console.log(players)
-    // this.finish({
-    //   playerNum: number,
-    // })
+    this.finish({
+      players
+    })
   }
 
   onDestroy(){
-    console.log('on onDestroy')
-    this.$app.$ui.$children = []
+    delete this.$app.$ui.$refs.lobby
   }
 
   update(time, delta){

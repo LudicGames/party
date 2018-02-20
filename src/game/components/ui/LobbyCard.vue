@@ -36,7 +36,6 @@ export default LudicComponent.extend({
       let color = this.generateNewColor()
       this.colors.push(color)
       this.colorIndex++
-      console.log(color)
     },
     previousColor(){
       if(this.colors.length > 1){

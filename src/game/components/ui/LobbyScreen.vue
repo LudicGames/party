@@ -1,6 +1,6 @@
 <template lang="pug">
   #lobby-screen
-    lobby-card(v-for="n in 4", ref="players" :ready="players[n-1].ready", :key="n")
+    lobby-card(v-for="n in 4", ref="players" :ready="players[n-1].ready", :key="n", @mousedown.native="cross(true,{gamepadIndex:n-1})", @mouseup.native="cross(false,{gamepadIndex:n-1})")
 </template>
 
 <script>
@@ -31,17 +31,30 @@ export default LudicComponent.extend({
     }
   },
   created(){
-    let [app] = this.componentArgs
-    this.inputListener = app.$input.newInputListener({
-      alsoAdd: true,
-      binder: this,
-      methods: {
-        cross: this.cross,
-        circle: this.circle,
-        left: this.left,
-        right: this.right,
+    // let [app] = this.componentArgs
+    // console.log(this.$app, this.app)
+    // this.inputListener = app.$input.newInputListener({
+    //   alsoAdd: true,
+    //   binder: this,
+    //   methods: {
+    //     cross: this.cross,
+    //     circle: this.circle,
+    //     left: this.left,
+    //     right: this.right,
+    //   },
+    // })
+  },
+  ludicInput(){
+    return {
+      inputListener: {
+        methods: {
+          cross: this.cross,
+          circle: this.circle,
+          left: this.left,
+          right: this.right,
+        },
       },
-    })
+    }
   },
   methods: {
     cross(down, {gamepadIndex}){
@@ -64,13 +77,13 @@ export default LudicComponent.extend({
     left(down, {gamepadIndex}){
       let player = this.players[gamepadIndex]
       if(!down && !player.ready){
-        player.previousColor()
+        this.$refs.players[gamepadIndex].previousColor()
       }
     },
     right(down, {gamepadIndex}){
       let player = this.players[gamepadIndex]
       if(!down && !player.ready){
-        player.nextColor()
+        this.$refs.players[gamepadIndex].nextColor()
       }
     },
   },
