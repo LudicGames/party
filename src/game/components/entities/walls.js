@@ -1,16 +1,16 @@
-import Box2D from 'ludic-box2d';
+import Box2D from 'ludic-box2d'
+import {BaseEntity} from 'ein'
 
-export default class Block {
-  constructor(x, y, width = 1, height = 1, color, world, active = true, priority = -1, isDynamic = true){
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.isDynamic = isDynamic;
-    this.color = color;
-    this.current = true;
-    this.score = 0;
-    this.createB2D(world);
+export default class Block extends BaseEntity {
+  constructor(width, height, world, color='orange', inside=false, isDynamic=true, active=true, priority=-1){
+    super(active, priority)
+    this.width = width
+    this.height = height
+    this.color = color
+    this.world = world
+    this.inside = inside
+    this.isDynamic = isDynamic
+    this.createB2D(world)
   }
 
   createB2D(world){
@@ -52,4 +52,4 @@ export default class Block {
     ctx.fillStyle = this.color;
     ctx.fillRect(pos.x - this.width / 2, pos.y - this.height / 2, this.width, this.height);
   }
-};
+}

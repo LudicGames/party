@@ -2,7 +2,7 @@ import {BaseSystem} from 'ein'
 
 const DEFAULTS = {
   active: true,
-  priority: -1,
+  priority: 10,
   entityQuery: {
     props: ['draw']
   }

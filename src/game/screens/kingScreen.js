@@ -35,7 +35,7 @@ export default class KingScreen extends Screen {
     this.engine.addSystem(this.clearSystem)
 
     // Camera
-    this.cameraSystem = new BaseSystem(true, -5, (delta)=>{
+    this.cameraSystem = new BaseSystem(true, 5, (delta)=>{
       this.camera.draw(this.$app.$context)
       this.camera.drawAxes(this.$app.$context)
     })
@@ -45,13 +45,15 @@ export default class KingScreen extends Screen {
     this.renderSystem = new RenderSystem(this.$app.$context)
     this.engine.addSystem(this.renderSystem)
 
+
+
   }
 
   initEntities(){
-    this.platform1 = new Block(8,-8,7,1,'blue',this.world, true, -1, false)
-    this.platform2 = new Block(8,-1,7,1,'orange',this.world, true, -1, true)
+    this.platform1 = new Block(0,0,20,20,'blue',this.world, true, -1, false)
+    // this.platform2 = new Block(8,-1,7,1,'orange',this.world, true, -1, true)
     this.engine.addEntity(this.platform1)
-    this.engine.addEntity(this.platform2)
+    // this.engine.addEntity(this.platform2)
   }
 
   onDestroy(){
