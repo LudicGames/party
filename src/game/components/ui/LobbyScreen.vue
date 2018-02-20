@@ -1,6 +1,6 @@
 <template lang="pug">
   #lobby-screen
-    lobby-card(v-for="n in 4", ref="players" :ready="players[n-1].ready", :key="n", @mousedown.native="cross(true,{gamepadIndex:n-1})", @mouseup.native="cross(false,{gamepadIndex:n-1})")
+    lobby-card(v-for="n in 4", ref="players", :player="players[n-1]", :key="n", @mousedown.native="cross(true,{gamepadIndex:n-1})", @mouseup.native="cross(false,{gamepadIndex:n-1})")
 </template>
 
 <script>
@@ -16,33 +16,23 @@ export default LudicComponent.extend({
       ready: false,
       players: [
         {
+          color: 'red',
           ready: false,
         },
         {
+          color: 'blue',
           ready: false,
         },
         {
+          color: 'purple',
           ready: false,
         },
         {
+          color: 'green',
           ready: false,
         },
       ],
     }
-  },
-  created(){
-    // let [app] = this.componentArgs
-    // console.log(this.$app, this.app)
-    // this.inputListener = app.$input.newInputListener({
-    //   alsoAdd: true,
-    //   binder: this,
-    //   methods: {
-    //     cross: this.cross,
-    //     circle: this.circle,
-    //     left: this.left,
-    //     right: this.right,
-    //   },
-    // })
   },
   ludicInput(){
     return {
@@ -50,8 +40,7 @@ export default LudicComponent.extend({
         methods: {
           cross: this.cross,
           circle: this.circle,
-          left: this.left,
-          right: this.right,
+          square: this.square,
         },
       },
     }
@@ -61,6 +50,7 @@ export default LudicComponent.extend({
       let player = this.players[gamepadIndex]
       if(!down){
         if(player.ready && !this.ready){
+          console.log(this.players)
           this.$ludicEmit('onReady', this.players)
           this.ready = true
         } else {
@@ -74,23 +64,18 @@ export default LudicComponent.extend({
         player.ready = false
       }
     },
-    left(down, {gamepadIndex}){
+    square(down, {gamepadIndex}){
       let player = this.players[gamepadIndex]
       if(!down && !player.ready){
-        this.$refs.players[gamepadIndex].previousColor()
+        player.color = this.generateNewColor()
       }
     },
-    right(down, {gamepadIndex}){
-      let player = this.players[gamepadIndex]
-      if(!down && !player.ready){
-        this.$refs.players[gamepadIndex].nextColor()
-      }
+
+    generateNewColor(){
+      return '#'+Math.floor(Math.random()*16777215).toString(16)
     },
   },
   ludicMethods: {
-    // onClick(number){
-    //   return number
-    // },
   },
 })
 </script>

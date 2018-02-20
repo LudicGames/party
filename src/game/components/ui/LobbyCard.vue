@@ -1,8 +1,8 @@
 <template lang="pug">
-  .lobby-card(@click="onClick()", :class="{'ready': ready}")
+  .lobby-card(:class="{'ready': player.ready}")
     .lobby-card-wrapper(:style="cardStyle")
-    p(v-if="!ready") Press X to join
-    p(v-if="ready") Ready!
+    p(v-if="!player.ready") Press X to join
+    p(v-if="player.ready") Ready!
 </template>
 
 <script>
@@ -10,39 +10,20 @@ import {LudicComponent} from 'ludic-vue'
 export default LudicComponent.extend({
   name: 'LobbyCard',
   props: {
-    ready: {type: Boolean, default: false},
+    player: {type: Object, default: false},
   },
   data(){
     return {
-      colorIndex: 0,
-      colors: [this.generateNewColor()],
     }
   },
   computed: {
     cardStyle(){
       return {
-        'background-color': this.colors[this.colorIndex],
+        'background-color': this.player.color,
       }
     }
   },
   methods: {
-    onClick(){
-      this.$emit('click')
-    },
-    generateNewColor(){
-      return '#'+Math.floor(Math.random()*16777215).toString(16)
-    },
-    nextColor(){
-      let color = this.generateNewColor()
-      this.colors.push(color)
-      this.colorIndex++
-    },
-    previousColor(){
-      if(this.colors.length > 1){
-        this.colors.pop()
-        this.colorIndex = this.colors.length-1
-      }
-    },
   },
 })
 </script>

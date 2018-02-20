@@ -17,7 +17,7 @@ export default class PartyApp extends LudicApp {
   }
 
   onScreenFinished(screen, manager, data){
-    // manager.popScreen()
+    manager.addScreen(new KingScreen(data.players), true)
   }
 
   update(delta, time){
