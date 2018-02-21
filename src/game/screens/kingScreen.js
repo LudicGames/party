@@ -27,7 +27,7 @@ export default class KingScreen extends Screen {
     // this.debugDraw.SetFlags(DebugDraw.e_shapeBit)
     // this.world.SetDebugDraw(this.debugDraw)
 
-    this.engine = new Engine()
+    this.engine = new Engine(this.$app)
   }
 
   initSystems(){
