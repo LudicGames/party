@@ -2,54 +2,78 @@ import Box2D from 'ludic-box2d'
 import {BaseEntity} from 'ein'
 
 export default class Block extends BaseEntity {
-  constructor(width, height, world, color='orange', inside=false, isDynamic=true, active=true, priority=-1){
+  constructor(width, height, world, color='orange', padding=0, active=true, priority=-1){
     super(active, priority)
     this.width = width
     this.height = height
-    this.color = color
     this.world = world
-    this.inside = inside
-    this.isDynamic = isDynamic
+    this.color = color
+    this.padding = padding
+    this.size = 1
     this.createB2D(world)
+    console.log(arguments)
   }
 
   createB2D(world){
-    let bd = new Box2D.b2BodyDef();
-    if(this.isDynamic){
-      bd.set_type(Box2D.b2_dynamicBody);
-    }
-    bd.set_position(new Box2D.b2Vec2(this.x, this.y));
-    this.body = world.CreateBody(bd);
+    // Top
+    let top_bd = new Box2D.b2BodyDef()
+    top_bd.set_position(new Box2D.b2Vec2(0, (this.height / 2) - (this.padding + this.size / 2)))
+    let top_body = world.CreateBody(top_bd)
 
-    let shape = new Box2D.b2PolygonShape();
-    shape.SetAsBox(this.width / 2, this.height / 2);
-    this.fixture = this.body.CreateFixture(shape, 0.0);
-    this.fixture.SetDensity(1.0);
-    this.body.ResetMassData();
-  }
+    let top_shape = new Box2D.b2PolygonShape()
+    top_shape.SetAsBox(this.width / 2, this.size / 2)
+    let top_fixture = top_body.CreateFixture(top_shape, 0.0)
+    top_fixture.SetDensity(1.0)
+    top_body.ResetMassData()
 
-  getPosition(easyRead){
-    let pos;
+    // Bottom
+    let bottom_bd = new Box2D.b2BodyDef()
+    bottom_bd.set_position(new Box2D.b2Vec2(0, (0 - this.height / 2) + (this.padding + this.size / 2)))
+    let bottom_body = world.CreateBody(bottom_bd)
 
-    this.pos = this.body.GetPosition();
+    let bottom_shape = new Box2D.b2PolygonShape()
+    bottom_shape.SetAsBox(this.width / 2, this.size / 2)
+    let bottom_fixture = bottom_body.CreateFixture(bottom_shape, 0.0)
+    bottom_fixture.SetDensity(1.0)
+    bottom_body.ResetMassData()
 
-    if(easyRead){
-      pos = {
-        x:this.pos.get_x(),
-        y:this.pos.get_y()
-      };
-    } else {
-      pos = this.pos;
-    }
-    return pos;
+    // Left
+    let left_bd = new Box2D.b2BodyDef()
+    left_bd.set_position(new Box2D.b2Vec2(-this.width / 2 + (this.padding + this.size / 2), 0 ))
+    let left_body = world.CreateBody(left_bd)
+
+    let left_shape = new Box2D.b2PolygonShape()
+    left_shape.SetAsBox(this.size / 2, this.height / 2)
+    let left_fixture = left_body.CreateFixture(left_shape, 0.0)
+    left_fixture.SetDensity(1.0)
+    left_body.ResetMassData()
+
+    // Right
+    let right_bd = new Box2D.b2BodyDef()
+    right_bd.set_position(new Box2D.b2Vec2(this.width / 2 - (this.size / 2 + this.padding), 0 ))
+    let right_body = world.CreateBody(right_bd)
+
+    let right_shape = new Box2D.b2PolygonShape()
+    right_shape.SetAsBox(this.size / 2, this.height / 2)
+    let right_fixture = right_body.CreateFixture(right_shape, 0.0)
+    right_fixture.SetDensity(1.0)
+    right_body.ResetMassData()
+
   }
 
   draw(ctx){
-    let pos = this.getPosition(true);
-    ctx.translate(pos.x, pos.y);
-    ctx.rotate(this.body.GetAngle());
-    ctx.translate(-(pos.x), -(pos.y));
-    ctx.fillStyle = this.color;
-    ctx.fillRect(pos.x - this.width / 2, pos.y - this.height / 2, this.width, this.height);
+    // Top
+    ctx.fillStyle = this.color
+    ctx.fillRect(-this.width / 2 + this.padding,  this.height / 2 - (this.size + this.padding), this.width - this.padding * 2, this.size)
+
+    // Bottom
+    ctx.fillRect(-this.width / 2 + this.padding,  -this.height / 2 + this.padding, this.width - this.padding * 2, this.size)
+
+    // left
+    ctx.fillRect(-this.width / 2 + this.padding,  -this.height / 2 + this.padding, this.size, this.height - (this.padding * 2))
+
+    // right
+    ctx.fillRect(this.width / 2 - (this.size + this.padding),  -this.height / 2 + this.padding, this.size, this.height - (this.padding * 2))
+
   }
 }

@@ -3,6 +3,7 @@ import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
 import Block from '$entities/block'
 import Player from '$entities/player'
+import Walls from '$entities/walls'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 
@@ -58,10 +59,12 @@ export default class KingScreen extends Screen {
   }
 
   initEntities(){
-    this.platform1 = new Block(0,0,20,20,'blue',this.world, true, -1, false)
-    // this.platform2 = new Block(8,-1,7,1,'orange',this.world, true, -1, true)
+    this.platform1 = new Block(0,0,5,5,'blue',this.world, true, -1, false)
     this.engine.addEntity(this.platform1)
-    // this.engine.addEntity(this.platform2)
+
+    this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', 0)
+    this.engine.addEntity(this.walls)
+
 
     this.players.forEach((player, index)=>{
       if(player.ready){
