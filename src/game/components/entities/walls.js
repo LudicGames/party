@@ -11,7 +11,6 @@ export default class Block extends BaseEntity {
     this.padding = padding
     this.size = 1
     this.createB2D(world)
-    console.log(arguments)
   }
 
   createB2D(world){
