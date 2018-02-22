@@ -5,6 +5,7 @@ import LobbyScreen from '@/game/screens/lobbyScreen'
 import GameScreen from '@/game/screens/gameScreen'
 import KingScreen from '@/game/screens/kingScreen'
 import SoccerScreen from '@/game/screens/soccerScreen'
+import TrackingScreen from '@/game/screens/trackingScreen'
 
 export default class PartyApp extends LudicApp {
   constructor(cfg) {
@@ -14,8 +15,9 @@ export default class PartyApp extends LudicApp {
     this.screenManager.addScreenEventListener(this)
     // this.screenManager.addScreen(new LobbyScreen())
     // this.screenManager.addScreen(new GameScreen())
-    this.screenManager.addScreen(new KingScreen([{color: 'green', ready: true}, {color: 'blue', ready: false}]))
     this.screenManager.addScreen(new SoccerScreen([{color: 'red', ready: true}, {color: 'blue', ready: true}]))
+    // this.screenManager.addScreen(new KingScreen([{color: 'green', ready: true}, {color: 'blue', ready: false}]))
+    this.screenManager.addScreen(new TrackingScreen([{color: 'green', ready: true}, {color: 'blue', ready: false}]))
   }
 
   onScreenFinished(screen, manager, data){

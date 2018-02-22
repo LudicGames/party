@@ -72,11 +72,12 @@ export default class Player extends BaseEntity{
   draw(ctx){
 
     let pos = this.getPosition(true)
-
+    ctx.save()
     ctx.translate(pos.x, pos.y)
     ctx.rotate(this.body.GetAngle())
     ctx.translate(-(pos.x), -(pos.y))
     ctx.fillStyle = this.color
     ctx.fillRect(pos.x - this.width / 2, pos.y - this.height / 2, this.width, this.height)
+    ctx.restore()
   }
 }
