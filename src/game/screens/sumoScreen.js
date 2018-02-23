@@ -7,7 +7,7 @@ import Walls from '$entities/walls'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 
-export default class soccerScreen extends Screen {
+export default class SumoScreen extends Screen {
   constructor(players){
     super()
     this.players = players
@@ -34,7 +34,7 @@ export default class soccerScreen extends Screen {
   initSystems(){
     // Clear
     this.clearSystem = new BaseSystem(true, -100, (delta)=>{
-      this.$app.$canvas.clear()
+      this.$app.$canvas.clear('#0C141F')
     })
     this.engine.addSystem(this.clearSystem)
 
@@ -63,14 +63,11 @@ export default class soccerScreen extends Screen {
     this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', -1)
     this.engine.addEntity(this.walls)
 
-    // Ball
-    this.circle = new Circle(0, 0, 1, 'green', this.world)
-    this.engine.addEntity(this.circle)
-
     // Players
     this.players.forEach((player, index)=>{
+      let x = 1 - index
       if(player.ready){
-        player.entity = new Player({x:8, y: 3, width: 8, height: 1, color: player.color, world: this.world, gamepadIndex: index})
+        player.entity = new Player({x:index * 4, y: 0, width: 2, height: 2, color: player.color, world: this.world, gamepadIndex: index})
         this.engine.addEntity(player.entity)
       }
     })

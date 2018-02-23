@@ -58,7 +58,10 @@ export default class MovementSystem extends BaseSystem {
         up: this.moveEntity('y', entity, this.maxVY, 's'),
         down: this.moveEntity('y', entity, -this.maxVY, 'w'),
         r1: this.rotateEntity(entity, true),
+        r2: this.boost(entity),
         l1: this.rotateEntity(entity, false),
+        l2: this.rotateEntity(entity, false),
+        cross: this.boost(entity),
 
         rightStick: this.moveStick(entity, true),
         leftStick: this.moveStick(entity, false)
@@ -111,6 +114,26 @@ export default class MovementSystem extends BaseSystem {
       vec[`set_${dir.desired}`](desiredVel)
       entity.body.SetLinearVelocity(vec)
     }
+  }
+
+  boost(entity){
+
+    return (keyDown, e)=>{
+      console.log("boost!")
+      if(keyDown){
+        let vel = entity.body.GetLinearVelocity()
+        console.log(vel.get_x())
+        console.log(vel.get_y())
+        let velChange = 100 - vel.get_x()
+        let impulse = entity.body.GetMass() * velChange
+        // console.log('move entity right', desiredVel, vel.get_x(), velChange, entity.body.GetMass(), impulse)
+        entity.body.ApplyForce(new Box2D.b2Vec2(0, impulse), entity.body.GetWorldCenter())
+      } else {
+
+      }
+    }
+
+
   }
 
   rotateEntity(entity, right){
