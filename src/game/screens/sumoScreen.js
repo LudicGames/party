@@ -3,9 +3,10 @@ import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
 import Circle from '$entities/circle'
 import Player from '$entities/player'
-import Walls from '$entities/walls'
+import SumoRing from '$entities/sumoRing'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
+import SumoSystem from '$systems/sumo'
 
 export default class SumoScreen extends Screen {
   constructor(players){
@@ -49,19 +50,25 @@ export default class SumoScreen extends Screen {
     this.renderSystem = new RenderSystem(this.$app.$context)
     this.engine.addSystem(this.renderSystem)
 
+    // Input
     this.inputSystem = new BaseSystem(true, 1, ()=>{
       this.$app.$input.update()
     })
     this.engine.addSystem(this.inputSystem)
 
+    // Movement
     this.movementSystem = new MovementSystem(this.$app)
     this.engine.addSystem(this.movementSystem)
+
+    // Sumo
+    this.sumoSystem = new SumoSystem({}, this.world)
+    this.engine.addSystem(this.sumoSystem)
   }
 
   initEntities(){
-    // Walls
-    this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', -1)
-    this.engine.addEntity(this.walls)
+    // Ring
+    this.ring = new SumoRing(0, 0, 10, 'azure', this.world)
+    this.engine.addEntity(this.ring)
 
     // Players
     this.players.forEach((player, index)=>{

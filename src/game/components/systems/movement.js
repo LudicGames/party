@@ -58,9 +58,8 @@ export default class MovementSystem extends BaseSystem {
         up: this.moveEntity('y', entity, this.maxVY, 's'),
         down: this.moveEntity('y', entity, -this.maxVY, 'w'),
         r1: this.rotateEntity(entity, true),
-        r2: this.boost(entity),
+
         l1: this.rotateEntity(entity, false),
-        l2: this.rotateEntity(entity, false),
         cross: this.boost(entity),
 
         rightStick: this.moveStick(entity, true),
@@ -117,19 +116,34 @@ export default class MovementSystem extends BaseSystem {
   }
 
   boost(entity){
-
+    entity.boost_charge = 0
+    entity.start_color = entity.color
     return (keyDown, e)=>{
-      console.log("boost!")
       if(keyDown){
+        entity.boost_charge++
+        entity.color = darken(entity.color, -.02)
+      } else {
+        entity.color = entity.start_color
+        let magnitude = 100 //entity.body.GetMass() * entity.boost_charge
         let vel = entity.body.GetLinearVelocity()
+
         console.log(vel.get_x())
         console.log(vel.get_y())
-        let velChange = 100 - vel.get_x()
-        let impulse = entity.body.GetMass() * velChange
-        // console.log('move entity right', desiredVel, vel.get_x(), velChange, entity.body.GetMass(), impulse)
-        entity.body.ApplyForce(new Box2D.b2Vec2(0, impulse), entity.body.GetWorldCenter())
-      } else {
 
+        let x = vel.get_x() * 10
+        let y = vel.get_y() * 10
+
+
+        console.log(x)
+        console.log(y)
+
+        entity.boosting = true
+
+        // let impulse = new Box2D.b2Vec2(Math.cos(entity.body.GetAngle()) * magnitude , Math.sin(entity.body.GetAngle()) * magnitude)
+
+        // entity.body.ApplyLinearImpulse(new Box2D.b2Vec2(x, y), entity.body.GetWorldCenter())
+        entity.body.ApplyLinearImpulse(new Box2D.b2Vec2(x, y), entity.body.GetWorldCenter())
+        entity.boost_charge = 0
       }
     }
 
@@ -164,4 +178,26 @@ export default class MovementSystem extends BaseSystem {
       }
     }
   }
+}
+
+
+// TODO move this
+function darken(hex, lum) {
+
+	// validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
 }
