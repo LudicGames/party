@@ -17,12 +17,13 @@ export default class PartyApp extends LudicApp {
     // this.screenManager.addScreen(new LobbyScreen())
     // this.screenManager.addScreen(new GameScreen())
     // this.screenManager.addScreen(new KingScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
-    // this.screenManager.addScreen(new SoccerScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
-    this.screenManager.addScreen(new SumoScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
+    this.screenManager.addScreen(new SoccerScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
+    // this.screenManager.addScreen(new SumoScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
   }
 
   onScreenFinished(screen, manager, data){
-    manager.addScreen(new KingScreen(data.players), true)
+    // manager.addScreen(new KingScreen(data.players), true)
+    this.screenManager.addScreen(new SumoScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
   }
 
   update(delta, time){

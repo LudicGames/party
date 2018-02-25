@@ -18,6 +18,9 @@ export default class SumoScreen extends Screen {
     this.initWorld()
     this.initSystems()
     this.initEntities()
+
+    // Sumo music
+    // window.open("https://www.youtube.com/embed/qupswFhMCxI?autoplay=1", "_blank")
   }
 
   initWorld(){
@@ -67,17 +70,14 @@ export default class SumoScreen extends Screen {
 
   initEntities(){
     // Ring
-    this.ring = new SumoRing(0, 0, 10, 'azure', this.world)
+    this.ring = new SumoRing(0, 0, 8, 'azure', this.world)
     this.engine.addEntity(this.ring)
 
-    // Players
-    this.players.forEach((player, index)=>{
-      let x = 1 - index
-      if(player.ready){
-        player.entity = new Player({x:index * 4, y: 0, width: 2, height: 2, color: player.color, world: this.world, gamepadIndex: index})
-        this.engine.addEntity(player.entity)
-      }
-    })
+    // Players TODO make default spawn system
+    this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
+    this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+    this.engine.addEntity(this.players[0].entity)
+    this.engine.addEntity(this.players[1].entity)
   }
 
   onDestroy(){

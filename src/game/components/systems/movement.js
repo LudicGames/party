@@ -127,19 +127,18 @@ export default class MovementSystem extends BaseSystem {
         let magnitude = 100 //entity.body.GetMass() * entity.boost_charge
         let vel = entity.body.GetLinearVelocity()
 
-        console.log(vel.get_x())
-        console.log(vel.get_y())
+        // console.log(vel.get_x())
+        // console.log(vel.get_y())
 
         let x = vel.get_x() * 10
         let y = vel.get_y() * 10
 
-
+        x = 0
+        y = 400
         console.log(x)
         console.log(y)
 
         entity.boosting = true
-
-        // let impulse = new Box2D.b2Vec2(Math.cos(entity.body.GetAngle()) * magnitude , Math.sin(entity.body.GetAngle()) * magnitude)
 
         // entity.body.ApplyLinearImpulse(new Box2D.b2Vec2(x, y), entity.body.GetWorldCenter())
         entity.body.ApplyLinearImpulse(new Box2D.b2Vec2(x, y), entity.body.GetWorldCenter())

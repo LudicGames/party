@@ -9,13 +9,14 @@ const DEFAULTS = {
   }
 }
 
-export default class SumoSystem extends BaseSystem {
+export default class SoccerSystem extends BaseSystem {
   constructor(cfg={}, world){
     cfg = Object.assign(DEFAULTS, cfg)
     super(cfg)
     this.world = world
     this.players = []
-    this.ring = null
+    this.goals = []
+    this.ball = null
   }
 
   initContactListener(){
@@ -51,11 +52,10 @@ export default class SumoSystem extends BaseSystem {
 
   onEntityAdded(entity){
     this.entities.push(entity)
-    if(entity.constructor.name == "Player"){
-      this.players.push(entity)
-    } else {
-      this.ring = entity
-    }
+    if(entity.constructor.name == "Player"){ this.players.push(entity) }
+    if(entity.constructor.name == "Goal"){ this.goals.push(entity) }
+    if(entity.constructor.name == "Ball"){ this.ball = entity }
+
     this.initContactListener()
   }
 

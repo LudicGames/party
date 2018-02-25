@@ -4,8 +4,10 @@ import {Engine, BaseSystem} from 'ein'
 import Circle from '$entities/circle'
 import Player from '$entities/player'
 import Walls from '$entities/walls'
+import Goal from '$entities/goal'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
+import SoccerSystem from '$systems/soccer'
 
 export default class soccerScreen extends Screen {
   constructor(players){
@@ -34,7 +36,7 @@ export default class soccerScreen extends Screen {
   initSystems(){
     // Clear
     this.clearSystem = new BaseSystem(true, -100, (delta)=>{
-      this.$app.$canvas.clear()
+      this.$app.$canvas.clear('#0C141F')
     })
     this.engine.addSystem(this.clearSystem)
 
@@ -49,13 +51,20 @@ export default class soccerScreen extends Screen {
     this.renderSystem = new RenderSystem(this.$app.$context)
     this.engine.addSystem(this.renderSystem)
 
+    // Input
     this.inputSystem = new BaseSystem(true, 1, ()=>{
       this.$app.$input.update()
     })
     this.engine.addSystem(this.inputSystem)
 
+    // Movement
     this.movementSystem = new MovementSystem(this.$app)
     this.engine.addSystem(this.movementSystem)
+
+    // Soccer
+    this.soccerSystem = new SoccerSystem({}, this.world)
+    this.engine.addSystem(this.soccerSystem)
+
   }
 
   initEntities(){
@@ -63,8 +72,14 @@ export default class soccerScreen extends Screen {
     this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', -1)
     this.engine.addEntity(this.walls)
 
+    // Goals
+    this.goal1 = new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 2, 1, 6, "#92F15F", this.world)
+    this.goal2 = new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 2, 1, 6, "#92F15F", this.world)
+    this.engine.addEntity(this.goal1)
+    this.engine.addEntity(this.goal2)
+
     // Ball
-    this.circle = new Circle(0, 0, 1, 'green', this.world)
+    this.circle = new Circle(0, 0, 1, 'azure', this.world)
     this.engine.addEntity(this.circle)
 
     // Players
