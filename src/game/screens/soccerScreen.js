@@ -13,6 +13,10 @@ export default class soccerScreen extends Screen {
   constructor(players){
     super()
     this.players = players
+
+    // Soccer music
+    // window.open("https://youtu.be/4PHVZ-6fZS8?autoplay=1", "_blank")
+
   }
 
   onAddedToManager(){
@@ -73,19 +77,37 @@ export default class soccerScreen extends Screen {
     this.engine.addEntity(this.walls)
 
     // Goals
-    this.goal1 = new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 2, 1, 6, "#92F15F", this.world)
-    this.goal2 = new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 2, 1, 6, "#92F15F", this.world)
+    this.goal1 = new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 1, 6, "#92F15F", this.world)
+    this.goal2 = new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 1, 6, "#92F15F", this.world)
     this.engine.addEntity(this.goal1)
     this.engine.addEntity(this.goal2)
 
     // Ball
-    this.circle = new Circle(0, 0, 1, 'azure', this.world)
+    this.circle = new Circle(0.5, 0, 1, 'azure', this.world)
     this.engine.addEntity(this.circle)
+
+    // Create Spawn Points
+    switch (this.players.length){
+    case 2:
+      this.spawnPoints = {
+        0: {x: -10, y: 0},
+        1: {x: 10, y: 0}
+      }
+      break
+    case 4:
+      this.spawnPoints = {
+        0: {x: -10, y: 5},
+        1: {x: 10, y: -5},
+        2: {x: 10, y: 5},
+        3: {x: 10, y: -5}
+      }
+      break
+    }
 
     // Players
     this.players.forEach((player, index)=>{
       if(player.ready){
-        player.entity = new Player({x:8, y: 3, width: 8, height: 1, color: player.color, world: this.world, gamepadIndex: index})
+        player.entity = new Player({x: this.spawnPoints[index].x, y: this.spawnPoints[index].y, width: 1, height: 6, color: player.color, world: this.world, gamepadIndex: index})
         this.engine.addEntity(player.entity)
       }
     })

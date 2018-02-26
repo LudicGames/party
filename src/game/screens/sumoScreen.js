@@ -12,15 +12,15 @@ export default class SumoScreen extends Screen {
   constructor(players){
     super()
     this.players = players
+
+    // Sumo music
+    // window.open("https://www.youtube.com/embed/qupswFhMCxI?autoplay=1", "_blank")
   }
 
   onAddedToManager(){
     this.initWorld()
     this.initSystems()
     this.initEntities()
-
-    // Sumo music
-    // window.open("https://www.youtube.com/embed/qupswFhMCxI?autoplay=1", "_blank")
   }
 
   initWorld(){

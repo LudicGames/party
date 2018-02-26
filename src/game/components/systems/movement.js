@@ -13,7 +13,7 @@ export default class MovementSystem extends BaseSystem {
     // environment vars describing how players move
     this.maxVX = 25
     this.maxVY = 25
-    this.maxRotation = 11
+    this.maxRotation = 5
 
     this.entityQuery = {
       class: 'Player'

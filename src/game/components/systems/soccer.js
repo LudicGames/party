@@ -26,20 +26,29 @@ export default class SoccerSystem extends BaseSystem {
       let a = contact.GetFixtureA()
       let b = contact.GetFixtureB()
 
-      // Player 0 looses
-      if((this.ring.fixture == a && this.players[0].fixture == b) || (this.ring.fixture == b && this.players[0].fixture == a)){
-        // console.log(this.players[0].color + " LOOSES! HE FUCKIN SUCKS!")
-        this.engine.props.onScreenFinished()
+      // If the ball touched goal 0, player 1 wins
+      if((a == this.ball.fixture && b == this.goals[0].fixture) || (b == this.ball.fixture && a == this.goals[0].fixture)){
+        if(!this.players[1].goals){
+          this.players[1].goals = 1
+        } else {
+          this.players[1].goals++
+        }
+        // this.engine.props.onScreenFinished()
       }
 
-      // Player 1 looses
-      if((this.ring.fixture == a && this.players[1].fixture == b) || (this.ring.fixture == b && this.players[1].fixture == a)){
-        // console.log(this.players[1].color + " LOOSES! HE FUCKIN SUCKS!")
-        this.engine.props.onScreenFinished()
+      // If the ball touched goal 1, player 0 wins
+      if((a == this.ball.fixture && b == this.goals[1].fixture) || (b == this.ball.fixture && a == this.goals[1].fixture)){
+        if(!this.players[0].goals){
+          this.players[0].goals = 1
+        } else {
+          this.players[0].goals++
+        }
+
+
+        // Reset the Ball - BROKEN
+        // this.ball.needsDestroy = true
+
       }
-
-
-
 
     }
     // Init these, or else B2D will explode
@@ -51,21 +60,15 @@ export default class SoccerSystem extends BaseSystem {
   }
 
   onEntityAdded(entity){
-    this.entities.push(entity)
     if(entity.constructor.name == "Player"){ this.players.push(entity) }
     if(entity.constructor.name == "Goal"){ this.goals.push(entity) }
-    if(entity.constructor.name == "Ball"){ this.ball = entity }
-
+    if(entity.constructor.name == "Circle"){ this.ball = entity }
     this.initContactListener()
   }
 
   onEntityRemoved(entity){
-    this.entities.splice(this.entities.indexOf(entity), 1)
+
   }
 
-  update(){
-    this.entities.forEach(entity => {
-
-    })
-  }
+  update(){}
 }
