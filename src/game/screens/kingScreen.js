@@ -1,11 +1,12 @@
 import {Screen, Camera} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
-import Block from '$entities/block'
-import Player from '$entities/player'
 import Walls from '$entities/walls'
+import Ring from '$entities/ring'
+import Player from '$entities/player'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
+import KingSystem from '$systems/king'
 
 export default class KingScreen extends Screen {
   constructor(players){
@@ -34,7 +35,7 @@ export default class KingScreen extends Screen {
   initSystems(){
     // Clear
     this.clearSystem = new BaseSystem(true, -100, (delta)=>{
-      this.$app.$canvas.clear()
+      this.$app.$canvas.clear('#0C141F')
     })
     this.engine.addSystem(this.clearSystem)
 
@@ -49,26 +50,61 @@ export default class KingScreen extends Screen {
     this.renderSystem = new RenderSystem(this.$app.$context)
     this.engine.addSystem(this.renderSystem)
 
+    // Input
     this.inputSystem = new BaseSystem(true, 1, ()=>{
       this.$app.$input.update()
     })
     this.engine.addSystem(this.inputSystem)
 
+    // Movement
     this.movementSystem = new MovementSystem(this.$app)
     this.engine.addSystem(this.movementSystem)
+
+    // King
+    this.kingSystem = new KingSystem({}, this.world)
+    this.engine.addSystem(this.kingSystem)
+
   }
 
   initEntities(){
-    this.platform1 = new Block(0,0,5,5,'blue',this.world, true, -1, false)
-    this.engine.addEntity(this.platform1)
+    // Ring
+    this.ring = new Ring(0, 0, 4, 'azure', this.world)
+    this.engine.addEntity(this.ring)
 
-    this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', 0)
-    this.engine.addEntity(this.walls)
+    // Walls
+    // this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', 0)
+    // this.engine.addEntity(this.walls)
+
+    // Create Spawn Points
+    switch (this.players.length){
+    case 2:
+      this.spawnPoints = {
+        0: {x: -10, y: 0},
+        1: {x: 10, y: 0}
+      }
+      break
+    case 3:
+      this.spawnPoints = {
+        0: {x: -10, y: 0},
+        1: {x: 10, y: 0},
+        2: {x: 0, y: 10},
+      }
+      break
+    case 4:
+      this.spawnPoints = {
+        0: {x: -10, y: 0},
+        1: {x: 10, y: 0},
+        2: {x: 0, y: 10},
+        3: {x: 0, y: -10},
+      }
+      break
+    }
 
 
+    // Players
     this.players.forEach((player, index)=>{
       if(player.ready){
-        player.entity = new Player({x:8, y: 3, width: 2, height: 2, color: player.color, world: this.world, gamepadIndex: index})
+        player.entity = new Player({x: this.spawnPoints[index].x, y: this.spawnPoints[index].y, width: 1, height: 3, color: player.color, world: this.world, gamepadIndex: index})
         this.engine.addEntity(player.entity)
       }
     })

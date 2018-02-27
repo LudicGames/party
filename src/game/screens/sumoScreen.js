@@ -3,7 +3,7 @@ import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
 import Circle from '$entities/circle'
 import Player from '$entities/player'
-import SumoRing from '$entities/sumoRing'
+import Ring from '$entities/ring'
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import SumoSystem from '$systems/sumo'
@@ -70,7 +70,7 @@ export default class SumoScreen extends Screen {
 
   initEntities(){
     // Ring
-    this.ring = new SumoRing(0, 0, 8, 'azure', this.world)
+    this.ring = new Ring(0, 0, 8, 'azure', this.world)
     this.engine.addEntity(this.ring)
 
     // Players TODO make default spawn system

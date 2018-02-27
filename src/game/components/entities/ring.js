@@ -1,7 +1,7 @@
 import {BaseEntity} from 'ein'
 import Box2D from 'ludic-box2d'
 
-export default class SumoRing extends BaseEntity {
+export default class Ring extends BaseEntity {
   constructor(x, y, radius = 5, color, world, active = true, priority = -1, isDynamic = true){
     super(active, priority)
     this.x = x
