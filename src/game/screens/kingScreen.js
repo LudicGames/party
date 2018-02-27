@@ -1,6 +1,7 @@
 import {Screen, Camera} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
+import Timer from '$ui/Timer'
 import Walls from '$entities/walls'
 import Ring from '$entities/ring'
 import Player from '$entities/player'
@@ -18,6 +19,7 @@ export default class KingScreen extends Screen {
     this.initWorld()
     this.initSystems()
     this.initEntities()
+    this.initUI()
   }
 
   initWorld(){
@@ -110,9 +112,23 @@ export default class KingScreen extends Screen {
     })
   }
 
+  initUI(){
+    // Timer
+    this.timer = this.$mapMethods(new Timer(this.$app), {
+      'onTimeUp': 'onTimeUp',
+    })
+
+    this.$app.$ui.$refs.timer = this.timer
+  }
+
+  onTimeUp(){
+    this.finish({
+
+    })
+  }
+
   onDestroy(){
-    // console.log('onDestroy - KingScreen')
-    // this.$app.$ui.$children = []
+    delete this.$app.$ui.$refs.timer
   }
 
   update(delta, time){
