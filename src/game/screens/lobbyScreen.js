@@ -4,9 +4,9 @@ import LobbyScreenUI from '$ui/LobbyScreen'
 import {World} from 'ludic-box2d'
 
 export default class LobbyScreen extends Screen {
-  constructor(){
+  constructor(teamsEnabled){
     super()
-    this.world = new World(0,-9.8)
+    this.teamsEnabled = teamsEnabled
   }
 
   onAddedToManager(manager){

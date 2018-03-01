@@ -1,10 +1,13 @@
 import {LudicApp, Camera, ScreenManager} from 'ludic'
 import {UIText, UILayer} from 'ludic-vue'
 
+import SplashScreen from '@/game/screens/splashScreen'
 import LobbyScreen from '@/game/screens/lobbyScreen'
+import TrackingScreen from '@/game/screens/trackingScreen'
+
+// Games
 import KingScreen from '@/game/screens/kingScreen'
 import SoccerScreen from '@/game/screens/soccerScreen'
-import TrackingScreen from '@/game/screens/trackingScreen'
 import SumoScreen from '@/game/screens/sumoScreen'
 
 export default class PartyApp extends LudicApp {
@@ -13,15 +16,25 @@ export default class PartyApp extends LudicApp {
 
     this.screenManager = new ScreenManager(this)
     this.screenManager.addScreenEventListener(this)
-    // this.screenManager.addScreen(new LobbyScreen())
-    this.screenManager.addScreen(new KingScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
-    // this.screenManager.addScreen(new SoccerScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
-    // this.screenManager.addScreen(new SumoScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
+
+    this.gameScreens = [
+      KingScreen,
+      SoccerScreen,
+      SumoScreen,
+    ]
+
+    // Start on the SplashScreen
+    this.screenManager.addScreen(new SplashScreen())
   }
 
   onScreenFinished(screen, manager, data){
-    // manager.addScreen(new KingScreen(data.players), true)
-    this.screenManager.addScreen(new SumoScreen([{color: '#6FC3DF', ready: true}, {color: '#FFE64D', ready: true}]))
+    if(screen.constructor.name == "SplashScreen"){
+      this.screenManager.addScreen(new LobbyScreen(data.teams))
+    } else {
+      let rand = Math.floor(Math.random() * Math.floor(this.gameScreens.length))
+      let nextScreen = new this.gameScreens[rand](data)
+      this.screenManager.addScreen(nextScreen)
+    }
   }
 
   update(delta, time){

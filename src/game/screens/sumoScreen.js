@@ -9,9 +9,10 @@ import MovementSystem from '$systems/movement'
 import SumoSystem from '$systems/sumo'
 
 export default class SumoScreen extends Screen {
-  constructor(players){
+  constructor(data){
     super()
-    this.players = players
+    this.players = data.players
+    this.teams = data.teams
 
     // Sumo music
     // window.open("https://www.youtube.com/embed/qupswFhMCxI?autoplay=1", "_blank")

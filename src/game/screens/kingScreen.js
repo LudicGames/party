@@ -10,9 +10,10 @@ import MovementSystem from '$systems/movement'
 import KingSystem from '$systems/king'
 
 export default class KingScreen extends Screen {
-  constructor(players){
+  constructor(data){
     super()
-    this.players = players
+    this.players = data.players
+    this.teams = data.teams
   }
 
   onAddedToManager(){

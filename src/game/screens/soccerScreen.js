@@ -9,11 +9,11 @@ import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import SoccerSystem from '$systems/soccer'
 
-export default class soccerScreen extends Screen {
-  constructor(players){
+export default class SoccerScreen extends Screen {
+  constructor(data){
     super()
-    this.players = players
-
+    this.players = data.players
+    this.teams = data.teams
     // Soccer music
     // window.open("https://youtu.be/4PHVZ-6fZS8?autoplay=1", "_blank")
 
