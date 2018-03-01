@@ -4,15 +4,20 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import Ludic from 'ludic'
 import LudicVue from 'ludic-vue'
+import {Box2D} from 'ludic-box2d'
 
 Vue.config.productionTip = false
 Vue.use(LudicVue)
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
+
+Box2D.then(()=>{
+  new Vue({
+    el: '#app',
+    router,
+    components: { App },
+    template: '<App/>'
+  })
 })

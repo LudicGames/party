@@ -11,8 +11,7 @@ export default LudicComponent.extend({
     return {
       x: 0,
       y: 0,
-      // visible: false,
-      visible: true,
+      visible: false,
       width: 130,
       height: 130,
     }

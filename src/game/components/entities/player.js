@@ -1,5 +1,5 @@
 import {BaseEntity} from 'ein'
-import Box2D from 'ludic-box2d'
+import {Box2D} from 'ludic-box2d'
 
 const DEFS = {
   x: 0,

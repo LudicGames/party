@@ -3,6 +3,8 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -34,9 +36,6 @@ module.exports = {
     modules: [resolve('node_modules'), 'node_modules'],
   },
   module: {
-    noParse: [
-      /Box2D_v2/, // needed for ludic-box2d
-    ],
     rules: [
       {
         test: /\.vue$/,
@@ -74,6 +73,18 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    // new webpack.DefinePlugin({
+    //   'Module': JSON.stringify({wasmBinaryFile: '/static/Box2D_v2.3.1_min.wasm.wasm'}),
+    // }),
+    new CopyWebpackPlugin([
+      {
+        from: require.resolve('box2d/build/Box2D_v2.3.1_min.wasm.wasm'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

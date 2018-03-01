@@ -1,6 +1,6 @@
 import {BaseSystem} from 'ein'
 // import Ludic from 'Ludic'
-import Box2D from 'ludic-box2d'
+import {Box2D} from 'ludic-box2d'
 
 const DEGTORAD = Math.PI / 180
 

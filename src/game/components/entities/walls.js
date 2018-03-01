@@ -1,4 +1,4 @@
-import Box2D from 'ludic-box2d'
+import {Box2D} from 'ludic-box2d'
 import {BaseEntity} from 'ein'
 
 export default class Block extends BaseEntity {

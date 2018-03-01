@@ -10,10 +10,10 @@ import KingScreen from '@/game/screens/kingScreen'
 import SoccerScreen from '@/game/screens/soccerScreen'
 import SumoScreen from '@/game/screens/sumoScreen'
 
+
 export default class PartyApp extends LudicApp {
   constructor(cfg) {
     super(cfg)
-
     this.screenManager = new ScreenManager(this)
     this.screenManager.addScreenEventListener(this)
 
