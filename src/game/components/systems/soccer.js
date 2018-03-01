@@ -1,5 +1,5 @@
 import {BaseSystem} from 'ein'
-import Box2D from 'ludic-box2d'
+import {Box2D} from 'ludic-box2d'
 
 const DEFAULTS = {
   active: true,

@@ -1,5 +1,5 @@
 import {BaseEntity} from 'ein'
-import Box2D from 'ludic-box2d'
+import {Box2D} from 'ludic-box2d'
 
 export default class Ring extends BaseEntity {
   constructor(x, y, radius = 5, color, world, active = true, priority = -1, isDynamic = true){

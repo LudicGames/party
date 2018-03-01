@@ -1,4 +1,4 @@
-import Box2D from 'ludic-box2d';
+import {Box2D} from 'ludic-box2d';
 
 export default class Goal {
   constructor(x, y, width = 1, height = 2, color, world, active = true, priority = -1){
