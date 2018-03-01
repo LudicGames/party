@@ -14,6 +14,7 @@ export default class SoccerScreen extends Screen {
     super()
     this.players = data.players
     this.teams = data.teams
+    this.goals = []
     // Soccer music
     // window.open("https://youtu.be/4PHVZ-6fZS8?autoplay=1", "_blank")
   }
@@ -67,19 +68,12 @@ export default class SoccerScreen extends Screen {
     // Soccer
     this.soccerSystem = new SoccerSystem({}, this.world)
     this.engine.addSystem(this.soccerSystem)
-
   }
 
   initEntities(){
     // Walls
     this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', -1)
     this.engine.addEntity(this.walls)
-
-    // Goals
-    this.goal1 = new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 1, 6, "#92F15F", this.world)
-    this.goal2 = new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 1, 6, "#92F15F", this.world)
-    this.engine.addEntity(this.goal1)
-    this.engine.addEntity(this.goal2)
 
     // Ball
     this.circle = new Circle(0.5, 0, 1, 'azure', this.world)
@@ -110,6 +104,33 @@ export default class SoccerScreen extends Screen {
         this.engine.addEntity(player.entity)
       }
     })
+
+    // Goals
+    if(this.teams){
+      this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, "#92F15F", this.world))
+      this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, "#92F15F", this.world))
+      this.teams.forEach((player, index)=>{
+        this.engine.addEntity(this.goals[index])
+      })
+    } else {
+      if(this.players.length == 2){
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+      }
+      if(this.players.length == 3){
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+      }
+      if(this.players.length == 4){
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+      }
+      this.players.forEach((player, index)=>{
+        this.engine.addEntity(this.goals[index])
+      })
+    }
   }
 
   onDestroy(){

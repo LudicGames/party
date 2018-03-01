@@ -17,6 +17,7 @@ export default class SoccerSystem extends BaseSystem {
     this.players = []
     this.goals = []
     this.ball = null
+    this.teams = cfg.teams
   }
 
   initContactListener(){
@@ -26,7 +27,14 @@ export default class SoccerSystem extends BaseSystem {
       let a = contact.GetFixtureA()
       let b = contact.GetFixtureB()
 
-      // If the ball touched goal 0, player 1 wins
+
+      // Check if the Ball touched a Goal
+      this.goals.foreach(goal => {
+        if((a == this.ball.fixture && b == this.goal.fixture) || (b == this.ball.fixture && a == this.goals.fixture)){
+
+        }
+      })
+
       if((a == this.ball.fixture && b == this.goals[0].fixture) || (b == this.ball.fixture && a == this.goals[0].fixture)){
         if(!this.players[1].goals){
           this.players[1].goals = 1
@@ -36,7 +44,7 @@ export default class SoccerSystem extends BaseSystem {
         // this.engine.props.onScreenFinished()
       }
 
-      // If the ball touched goal 1, player 0 wins
+      // If the ball touched goal 1
       if((a == this.ball.fixture && b == this.goals[1].fixture) || (b == this.ball.fixture && a == this.goals[1].fixture)){
         if(!this.players[0].goals){
           this.players[0].goals = 1
