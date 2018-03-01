@@ -16,7 +16,6 @@ export default class SoccerScreen extends Screen {
     this.teams = data.teams
     // Soccer music
     // window.open("https://youtu.be/4PHVZ-6fZS8?autoplay=1", "_blank")
-
   }
 
   onAddedToManager(){

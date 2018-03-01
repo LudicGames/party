@@ -15,8 +15,8 @@ export default class SplashScreen extends Screen {
     this.$app.$ui.$refs.splashScreen = this.splashScreen
   }
 
-  onReady([component, teams]){
-    this.finish({teams})
+  onReady([component, teamsEnabled]){
+    this.finish({teamsEnabled})
   }
 
   onDestroy(){
