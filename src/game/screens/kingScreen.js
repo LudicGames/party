@@ -1,10 +1,16 @@
 import {Screen, Camera} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
+
+// UI
 import Timer from '$ui/Timer'
+
+// Entities
 import Walls from '$entities/walls'
 import Ring from '$entities/ring'
 import Player from '$entities/player'
+
+// Systems
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import KingSystem from '$systems/king'

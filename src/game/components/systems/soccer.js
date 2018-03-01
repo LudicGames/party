@@ -1,3 +1,6 @@
+// 10 Points when the ball touches your goal
+// -5 Points when the ball touches someone elses goal
+
 import {BaseSystem} from 'ein'
 import {Box2D} from 'ludic-box2d'
 
@@ -14,10 +17,12 @@ export default class SoccerSystem extends BaseSystem {
     cfg = Object.assign(DEFAULTS, cfg)
     super(cfg)
     this.world = world
-    this.players = []
-    this.goals = []
-    this.ball = null
+    this.players = cfg.players
     this.teams = cfg.teams
+
+    this.playerEnts = []
+    this.goalEnts = []
+    this.ballEnt = null
   }
 
   initContactListener(){
@@ -28,35 +33,38 @@ export default class SoccerSystem extends BaseSystem {
       let b = contact.GetFixtureB()
 
 
-      // Check if the Ball touched a Goal
-      this.goals.foreach(goal => {
-        if((a == this.ball.fixture && b == this.goal.fixture) || (b == this.ball.fixture && a == this.goals.fixture)){
+      // Check if the contact was with a Ball
+      if(a == this.ballEnt.fixture || b == this.ballEnt.fixture){
+        // Check if the Ball touched a Goal
+        this.goalEnts.forEach(goal => {
+          if(a == goal.fixture || b == goal.fixture){
 
-        }
-      })
+            if(this.teams){
+              this.teams.forEach(team => {
+                if(team.color == goal.color){
+                  team.score += 10
+                } else {
+                  team.score -= 5
+                }
+              })
+            } else {
+              this.players.forEach(player => {
+                if(player.color == goal.color){
+                  player.score += 10
+                } else {
+                  player.score -= 5
+                }
+              })
+            }
 
-      if((a == this.ball.fixture && b == this.goals[0].fixture) || (b == this.ball.fixture && a == this.goals[0].fixture)){
-        if(!this.players[1].goals){
-          this.players[1].goals = 1
-        } else {
-          this.players[1].goals++
-        }
-        // this.engine.props.onScreenFinished()
+            // Reset the Ball
+            this.resetBall()
+          }
+        })
       }
-
-      // If the ball touched goal 1
-      if((a == this.ball.fixture && b == this.goals[1].fixture) || (b == this.ball.fixture && a == this.goals[1].fixture)){
-        if(!this.players[0].goals){
-          this.players[0].goals = 1
-        } else {
-          this.players[0].goals++
-        }
-
 
         // Reset the Ball - BROKEN
         // this.ball.needsDestroy = true
-
-      }
 
     }
     // Init these, or else B2D will explode
@@ -67,10 +75,16 @@ export default class SoccerSystem extends BaseSystem {
     this.world.SetContactListener(listener)
   }
 
+  resetBall(){
+    console.log("reset ball")
+    this.ballEnt.needsDestroy = true
+
+  }
+
   onEntityAdded(entity){
-    if(entity.constructor.name == "Player"){ this.players.push(entity) }
-    if(entity.constructor.name == "Goal"){ this.goals.push(entity) }
-    if(entity.constructor.name == "Circle"){ this.ball = entity }
+    if(entity.constructor.name == "Player"){ this.playerEnts.push(entity) }
+    if(entity.constructor.name == "Goal"){ this.goalEnts.push(entity) }
+    if(entity.constructor.name == "Circle"){ this.ballEnt = entity }
     this.initContactListener()
   }
 

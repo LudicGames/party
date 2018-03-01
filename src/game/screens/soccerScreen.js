@@ -1,10 +1,17 @@
 import {Screen, Camera} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
+
+// UI
+import Timer from '$ui/Timer'
+
+// Entities
 import Circle from '$entities/circle'
 import Player from '$entities/player'
 import Walls from '$entities/walls'
 import Goal from '$entities/goal'
+
+// Systems
 import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import SoccerSystem from '$systems/soccer'
@@ -23,6 +30,7 @@ export default class SoccerScreen extends Screen {
     this.initWorld()
     this.initSystems()
     this.initEntities()
+    this.initUI()
   }
 
   initWorld(){
@@ -66,7 +74,7 @@ export default class SoccerScreen extends Screen {
     this.engine.addSystem(this.movementSystem)
 
     // Soccer
-    this.soccerSystem = new SoccerSystem({}, this.world)
+    this.soccerSystem = new SoccerSystem({players: this.players, teams: this.teams}, this.world)
     this.engine.addSystem(this.soccerSystem)
   }
 
@@ -87,12 +95,19 @@ export default class SoccerScreen extends Screen {
         1: {x: 10, y: 0}
       }
       break
+    case 3:
+      this.spawnPoints = {
+        0: {x: 10, y: 0},
+        1: {x: -10, y: 0},
+        2: {x: 0.5, y: 10}
+      }
+      break
     case 4:
       this.spawnPoints = {
-        0: {x: -10, y: 5},
-        1: {x: 10, y: -5},
-        2: {x: 10, y: 5},
-        3: {x: 10, y: -5}
+        0: {x: 10, y: 0},
+        1: {x: -10, y: 0},
+        2: {x: 0.5, y: 10},
+        3: {x: 0.5, y: -10}
       }
       break
     }
@@ -107,25 +122,27 @@ export default class SoccerScreen extends Screen {
 
     // Goals
     if(this.teams){
-      this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, "#92F15F", this.world))
-      this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, "#92F15F", this.world))
+      this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - 1, 0, 2, 10, this.teams[0].color, this.world))
+      this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + 1, 0, 2, 10, this.teams[1].color, this.world))
       this.teams.forEach((player, index)=>{
         this.engine.addEntity(this.goals[index])
       })
     } else {
       if(this.players.length == 2){
-        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
-        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - 1, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + 1, 0, 2, 10, this.players[1].color, this.world))
       }
       if(this.players.length == 3){
-        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
-        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
-        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - 1, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + 1, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal(0, (this.camera.height / this.camera.ptm) / 2 - 1, 10, 2, this.players[2].color, this.world))
+
       }
       if(this.players.length == 4){
-        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - .5, 0, 2, 10, this.players[0].color, this.world))
-        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
-        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + .5, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal((this.camera.width / this.camera.ptm) / 2 - 1, 0, 2, 10, this.players[0].color, this.world))
+        this.goals.push(new Goal(0 - (this.camera.width / this.camera.ptm) / 2 + 1, 0, 2, 10, this.players[1].color, this.world))
+        this.goals.push(new Goal(0, (this.camera.height / this.camera.ptm) / 2 - 1, 10, 2, this.players[2].color, this.world))
+        this.goals.push(new Goal(0, 0 - (this.camera.height / this.camera.ptm) / 2 + 1, 10, 2, this.players[3].color, this.world))
       }
       this.players.forEach((player, index)=>{
         this.engine.addEntity(this.goals[index])
@@ -133,9 +150,22 @@ export default class SoccerScreen extends Screen {
     }
   }
 
+
+  initUI(){
+    // Timer
+    // this.timer = this.$mapMethods(new Timer(this.$app), {
+    //   'onTimeUp': 'onTimeUp',
+    // })
+
+    // this.$app.$ui.$refs.timer = this.timer
+  }
+
+  onTimeUp(){
+    this.finish({players: this.players, teams: this.teams})
+  }
+
   onDestroy(){
-    // console.log('onDestroy - KingScreen')
-    // this.$app.$ui.$children = []
+    delete this.$app.$ui.$refs.timer
   }
 
   update(delta, time){

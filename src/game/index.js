@@ -36,8 +36,24 @@ export default class PartyApp extends LudicApp {
         {
           color: 'blue',
           ready: true
+        },
+        {
+          color: 'green',
+          ready: true
+        },
+        {
+          color: 'yellow',
+          ready: true
         }
-      ]
+      ],
+      // teams: [
+      //   {
+      //     color: 'red',
+      //   },
+      //   {
+      //     color: 'green',
+      //   }
+      // ],
     }))
   }
 
