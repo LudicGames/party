@@ -70,10 +70,10 @@ export default LudicComponent.extend({
       flex-basis 100%
       color white
       font-size 3em
-      transition all .3s
+      transition all .2s
 
       &.active
-        font-size 3.5em
+        font-size 3.8em
         background rgba(0, 0, 0, .6)
 
 </style>

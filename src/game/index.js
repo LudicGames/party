@@ -3,6 +3,7 @@ import {UIText, UILayer} from 'ludic-vue'
 
 import SplashScreen from '@/game/screens/splashScreen'
 import LobbyScreen from '@/game/screens/lobbyScreen'
+import ScoreScreen from '@/game/screens/scoreScreen'
 import TrackingScreen from '@/game/screens/trackingScreen'
 
 // Games
@@ -26,46 +27,69 @@ export default class PartyApp extends LudicApp {
     // Start on the SplashScreen
     this.screenManager.addScreen(new SplashScreen())
 
-    // TODO remove
     // this.screenManager.addScreen(new KingScreen({
     //   players: [
     //     {
     //       color: 'red',
-    //       ready: true
+    //       ready: true,
+    //       score: 0,
     //     },
     //     {
     //       color: 'blue',
-    //       ready: true
+    //       ready: true,
+    //       score: 30,
     //     },
     //     {
     //       color: 'green',
-    //       ready: true
+    //       ready: true,
+    //       score: 10,
     //     },
     //     {
     //       color: 'yellow',
-    //       ready: true
+    //       ready: true,
+    //       score: 0,
     //     }
     //   ],
-    //   // teams: [
-    //   //   {
-    //   //     color: 'red',
-    //   //   },
-    //   //   {
-    //   //     color: 'green',
-    //   //   }
-    //   // ],
+    //   teams: [
+    //     {
+    //       color: 'red',
+    //       players: [
+    //         {
+    //           score: 20,
+    //         },
+    //         {
+    //           score: 30,
+    //         },
+    //       ]
+    //     },
+    //     {
+    //       color: 'green',
+    //       players: [
+    //         {
+    //           score: 20,
+    //         },
+    //         {
+    //           score: 60,
+    //         },
+    //       ]
+    //     }
+    //   ],
     // }))
   }
 
   onScreenFinished(screen, manager, data){
     if(screen.constructor.name == "SplashScreen"){
       this.screenManager.addScreen(new LobbyScreen(data.teamsEnabled))
-    } else {
+    } else if(screen.constructor.name == "ScoreScreen"){
       // filter out our current screen from contention
       let nextScreens = this.gameScreens.filter(gs => gs.name != screen.constructor.name)
       let rand = Math.floor(Math.random() * Math.floor(nextScreens.length))
       let nextScreen = new nextScreens[rand](data)
       this.screenManager.addScreen(nextScreen)
+    }
+    else {
+      // Show the score screen for 5 seconds
+      this.screenManager.addScreen(new ScoreScreen(data))
     }
   }
 

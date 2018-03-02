@@ -122,7 +122,7 @@ export default class KingScreen extends Screen {
 
   initUI(){
     // Timer
-    this.timer = this.$mapMethods(new Timer(this.$app), {
+    this.timer = this.$mapMethods(new Timer({time: 60}), {
       'onTimeUp': 'onTimeUp',
     })
 

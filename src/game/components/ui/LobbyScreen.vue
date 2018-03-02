@@ -20,18 +20,22 @@ export default LudicComponent.extend({
         {
           color: '#c0392b',
           ready: false,
+          score: 0,
         },
         {
           color: '#8e44ad',
           ready: false,
+          score: 0,
         },
         {
           color: '#2980b9',
           ready: false,
+          score: 0,
         },
         {
           color: '#27ae60',
           ready: false,
+          score: 0,
         },
       ],
     }
@@ -50,6 +54,7 @@ export default LudicComponent.extend({
           teams.push({
             color: player.color,
             players: [player],
+            score: 0,
           })
         }
         return teams

@@ -55,7 +55,7 @@ export default class SoccerScreen extends Screen {
     // Camera
     this.cameraSystem = new BaseSystem(true, 5, (delta)=>{
       this.camera.draw(this.$app.$context)
-      this.camera.drawAxes(this.$app.$context)
+      // this.camera.drawAxes(this.$app.$context)
     })
     this.engine.addSystem(this.cameraSystem)
 
