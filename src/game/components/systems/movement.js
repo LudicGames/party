@@ -165,9 +165,36 @@ export default class MovementSystem extends BaseSystem {
 
   moveStick(entity, right){
     let vec = new Box2D.b2Vec2(0,0)
+    let axisPoint = new Box2D.b2Vec2(0,0)
+    let dz = 0.12
     return (x, y, e)=>{
       // -x:left, -y:up
-      if(!right){
+      if(right){
+
+        if(Math.abs(x) > dz || Math.abs(y) > dz){
+          if(Math.abs(x) > dz){
+            axisPoint.set_x(x)
+          }
+          if(Math.abs(y) > dz){
+            axisPoint.set_y(-y)
+          }
+
+
+          let pos = entity.body.GetPosition()
+          let bodyAngle = entity.body.GetAngle()
+          let desiredAngle = Math.atan2(axisPoint.get_y(), axisPoint.get_x())
+
+          let nextAngle = bodyAngle + entity.body.GetAngularVelocity() / 60.0
+          let totalRotation = desiredAngle - nextAngle
+          while ( totalRotation < -180 * DEGTORAD ) totalRotation += 360 * DEGTORAD
+          while ( totalRotation >  180 * DEGTORAD ) totalRotation -= 360 * DEGTORAD
+          let desiredAngularVelocity = totalRotation * 60
+          let impulse = entity.body.GetInertia() * desiredAngularVelocity
+          entity.body.ApplyAngularImpulse( impulse , true)
+        } else {
+          entity.body.SetAngularVelocity(0)
+        }
+      } else {
         if(!e.axis.zeroed){
           vec.set_x(x*this.maxVX)
           vec.set_y(y*-this.maxVY)
