@@ -1,6 +1,6 @@
 <template lang="pug">
   #lobby-screen
-    lobby-card(v-for="n in 4", ref="players", :player="players[n-1]", :key="n", @mousedown.native="cross(true,{gamepadIndex:n-1})", @mouseup.native="cross(false,{gamepadIndex:n-1})")
+    lobby-card(v-for="n in 4", ref="players", :player="players[n-1]", :teams-enabled="teamsEnabled", :key="n", @mousedown.native="cross(true,{gamepadIndex:n-1})", @mouseup.native="cross(false,{gamepadIndex:n-1})")
 </template>
 
 <script>
@@ -14,25 +14,47 @@ export default LudicComponent.extend({
   data(){
     return {
       ready: false,
+      teamsEnabled: false,
+      colors: ['#c0392b', '#8e44ad', '#2980b9', '#27ae60'],
       players: [
         {
-          color: 'red',
+          color: '#c0392b',
           ready: false,
         },
         {
-          color: 'blue',
+          color: '#8e44ad',
           ready: false,
         },
         {
-          color: 'purple',
+          color: '#2980b9',
           ready: false,
         },
         {
-          color: 'green',
+          color: '#27ae60',
           ready: false,
         },
       ],
     }
+  },
+  computed: {
+    numPlayersReady(){
+      return this.players.reduce((total, player) => total =+ player.ready ? 1 : 0, 0)
+    },
+    teams(){
+      return this.players.reduce((teams, player)=>{
+        // find an existing team
+        let team = teams.find(team => team.color == player.color)
+        if(team){
+          team.players.push(player)
+        } else {
+          teams.push({
+            color: player.color,
+            players: [player],
+          })
+        }
+        return teams
+      },[])
+    },
   },
   ludicInput(){
     return {
@@ -45,12 +67,19 @@ export default LudicComponent.extend({
       },
     }
   },
+  mounted(){
+    let [{teamsEnabled}] = this.componentArgs
+    this.teamsEnabled = teamsEnabled
+  },
   methods: {
     cross(down, {gamepadIndex}){
       let player = this.players[gamepadIndex]
       if(!down){
         if(player.ready && !this.ready){
-          this.$ludicEmit('onReady', this.players)
+          this.$ludicEmit('onReady', {
+            players: this.players,
+            teams: this.teams,
+          })
           this.ready = true
         } else {
           player.ready = true
@@ -65,13 +94,19 @@ export default LudicComponent.extend({
     },
     square(down, {gamepadIndex}){
       let player = this.players[gamepadIndex]
-      if(!down && !player.ready){
-        player.color = this.generateNewColor()
+      if(!down && !player.ready && this.teamsEnabled){
+        player.color = this.getNextColor(player.color)
       }
     },
 
-    generateNewColor(){
-      return '#'+Math.floor(Math.random()*16777215).toString(16)
+    getNextColor(color){
+      let ix = this.colors.findIndex(c => c == color)
+      if(ix+1 >= this.colors.length){
+        ix = 0
+      } else {
+        ix++
+      }
+      return this.colors[ix]
     },
   },
   ludicMethods: {

@@ -36,8 +36,10 @@ export default LudicComponent.extend({
         this.teams = !this.teams
       }
     },
-    start(){
-      this.$ludicEmit('onReady', this.teams)
+    start(down){
+      if(!down){
+        this.$ludicEmit('onReady', this.teams)
+      }
     }
   },
 })

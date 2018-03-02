@@ -10,7 +10,7 @@ export default class LobbyScreen extends Screen {
   }
 
   onAddedToManager(manager){
-    this.lobbyScreen = this.$mapMethods(new LobbyScreenUI(this.$app), {
+    this.lobbyScreen = this.$mapMethods(new LobbyScreenUI({teamsEnabled: this.teamsEnabled}), {
       'onReady': 'onReady',
     })
     this.$app.$ui.$refs.lobby = this.lobbyScreen
