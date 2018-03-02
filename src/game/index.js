@@ -61,8 +61,10 @@ export default class PartyApp extends LudicApp {
     if(screen.constructor.name == "SplashScreen"){
       this.screenManager.addScreen(new LobbyScreen(data.teamsEnabled))
     } else {
-      let rand = Math.floor(Math.random() * Math.floor(this.gameScreens.length))
-      let nextScreen = new this.gameScreens[rand](data)
+      // filter out our current screen from contention
+      let nextScreens = this.gameScreens.filter(gs => gs.name != screen.constructor.name)
+      let rand = Math.floor(Math.random() * Math.floor(nextScreens.length))
+      let nextScreen = new nextScreens[rand](data)
       this.screenManager.addScreen(nextScreen)
     }
   }
