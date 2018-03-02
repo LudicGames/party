@@ -76,6 +76,8 @@ export default class MovementSystem extends BaseSystem {
       id: entity._id,
       listener: this.$app.$input.newInputListener(listenerConfig, this, true)
     }
+
+    entity.movementListener = this.entityListenerMap[entity._id].listener
   }
 
   moveEntity(axis, entity, max, oddKey){

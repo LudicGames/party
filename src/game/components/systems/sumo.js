@@ -41,6 +41,8 @@ export default class SumoSystem extends BaseSystem {
         this.playerEnts.forEach(player => {
           if(player.fixture == a || player.fixture == b){
             this.playersOut++
+            player.movementDisabled = true
+            player.movementListener.enabled = false
 
             // Award points
             if(this.playersOut == 1){ this.awardPoints(player, -10) }
