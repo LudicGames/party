@@ -16,10 +16,9 @@ export default class LobbyScreen extends Screen {
     this.$app.$ui.$refs.lobby = this.lobbyScreen
   }
 
-  onReady([component, players]){
-    this.finish({
-      players
-    })
+  onReady([component, data]){
+    data.players = data.players.filter(p => p.ready)
+    this.finish(data)
   }
 
   onDestroy(){

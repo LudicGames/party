@@ -20,6 +20,8 @@ export default class KingScreen extends Screen {
     super()
     this.players = data.players
     this.teams = data.teams
+
+    console.log(data)
   }
 
   onAddedToManager(){

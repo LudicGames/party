@@ -70,7 +70,12 @@ export default class SumoScreen extends Screen {
 
   initEntities(){
     // Ring
-    this.ring = new Ring(0, 0, 8, 'azure', this.world)
+    if(this.players.length == 2){
+      this.ring = new Ring(0, 0, 6, 'azure', this.world)
+    } else {
+      this.ring = new Ring(0, 0, 8, 'azure', this.world)
+    }
+
     this.engine.addEntity(this.ring)
 
     // Players
