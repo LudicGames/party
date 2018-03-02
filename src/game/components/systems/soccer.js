@@ -3,13 +3,15 @@
 
 import {BaseSystem} from 'ein'
 import {Box2D} from 'ludic-box2d'
+import Circle from '$entities/circle'
 
 const DEFAULTS = {
   active: true,
   priority: 10,
   entityQuery: {
     props: ['draw']
-  }
+  },
+  resetNeeded: false
 }
 
 export default class SoccerSystem extends BaseSystem {
@@ -58,14 +60,10 @@ export default class SoccerSystem extends BaseSystem {
             }
 
             // Reset the Ball
-            this.resetBall()
+            this.resetNeeded = true
           }
         })
       }
-
-        // Reset the Ball - BROKEN
-        // this.ball.needsDestroy = true
-
     }
     // Init these, or else B2D will explode
     listener.BeginContact = function (contactPtr) {}
@@ -73,12 +71,6 @@ export default class SoccerSystem extends BaseSystem {
     listener.PostSolve = function (contactPtr, contactImpulsePtr) {}
 
     this.world.SetContactListener(listener)
-  }
-
-  resetBall(){
-    console.log("reset ball")
-    this.ballEnt.needsDestroy = true
-
   }
 
   onEntityAdded(entity){
@@ -89,8 +81,15 @@ export default class SoccerSystem extends BaseSystem {
   }
 
   onEntityRemoved(entity){
-
+    this.ballEnt = null
   }
 
-  update(){}
+  update(){
+    if(this.resetNeeded){
+      this.world.DestroyBody(this.ballEnt.body)
+      this.circle = new Circle(0.5, 0, 1, 'azure', this.world)
+      this.engine.addEntity(this.circle)
+      this.resetNeeded = false
+    }
+  }
 }
