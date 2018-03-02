@@ -47,7 +47,30 @@ export default class SumoSystem extends BaseSystem {
             player.movementListener.enabled = false
 
             // Award points
-            if(this.playersOut == 1){ this.awardPoints(player, -10) }
+            if(this.playersOut == 1){
+              this.awardPoints(player, -10)
+
+              if(this.players.length == 2){
+                // Last player left gets 20
+                this.players.forEach(player => {
+                  if(!player.out){
+                    player.score += 20
+                  }
+                })
+
+                this.endGame()
+              }
+            }
+            if(this.playersOut == 2 && this.players.length == 3){
+                // Last player left gets 20
+                this.players.forEach(player => {
+                  if(!player.out){
+                    player.score += 20
+                  }
+                })
+
+                this.endGame()
+            }
             if(this.playersOut == 3){
               this.awardPoints(player, 10)
               player.score += 10
