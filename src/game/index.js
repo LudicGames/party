@@ -24,37 +24,37 @@ export default class PartyApp extends LudicApp {
     ]
 
     // Start on the SplashScreen
-    // this.screenManager.addScreen(new SplashScreen())
+    this.screenManager.addScreen(new SplashScreen())
 
     // TODO remove
-    this.screenManager.addScreen(new SumoScreen({
-      players: [
-        {
-          color: 'red',
-          ready: true
-        },
-        {
-          color: 'blue',
-          ready: true
-        },
-        {
-          color: 'green',
-          ready: true
-        },
-        {
-          color: 'yellow',
-          ready: true
-        }
-      ],
-      // teams: [
-      //   {
-      //     color: 'red',
-      //   },
-      //   {
-      //     color: 'green',
-      //   }
-      // ],
-    }))
+    // this.screenManager.addScreen(new KingScreen({
+    //   players: [
+    //     {
+    //       color: 'red',
+    //       ready: true
+    //     },
+    //     {
+    //       color: 'blue',
+    //       ready: true
+    //     },
+    //     {
+    //       color: 'green',
+    //       ready: true
+    //     },
+    //     {
+    //       color: 'yellow',
+    //       ready: true
+    //     }
+    //   ],
+    //   // teams: [
+    //   //   {
+    //   //     color: 'red',
+    //   //   },
+    //   //   {
+    //   //     color: 'green',
+    //   //   }
+    //   // ],
+    // }))
   }
 
   onScreenFinished(screen, manager, data){

@@ -14,8 +14,22 @@ export default class KingSystem extends BaseSystem {
     cfg = Object.assign(DEFAULTS, cfg)
     super(cfg)
     this.world = world
-    this.players = []
-    this.ring = null
+    this.players = cfg.players
+
+    this.playerEnts = []
+    setInterval(()=> {
+      this.playerEnts.forEach(playerEnt => {
+        if(playerEnt.in){
+          this.players.forEach(player => {
+            if(player.entity == playerEnt){
+              player.score++
+            }
+          })
+        }
+      })
+    }, 1000)
+
+    this.initContactListener()
   }
 
   initContactListener(){
@@ -25,22 +39,32 @@ export default class KingSystem extends BaseSystem {
       let a = contact.GetFixtureA()
       let b = contact.GetFixtureB()
 
-      // Player 0 looses
-      if((this.ring.fixture == a && this.players[0].fixture == b) || (this.ring.fixture == b && this.players[0].fixture == a)){
-        // console.log(this.players[0].color + " LOOSES! HE FUCKIN SUCKS!")
-        this.engine.props.onScreenFinished()
+      // Contact ended with the Ring
+      if(this.ring.fixture == a || this.ring.fixture == b){
+        this.playerEnts.forEach(player => {
+          if(player.fixture == a || player.fixture == b){
+            player.in = false
+          }
+        })
       }
-
-      // Player 1 looses
-      if((this.ring.fixture == a && this.players[1].fixture == b) || (this.ring.fixture == b && this.players[1].fixture == a)){
-        // console.log(this.players[1].color + " LOOSES! HE FUCKIN SUCKS!")
-        this.engine.props.onScreenFinished()
-      }
-
-
     }
     // Init these, or else B2D will explode
-    listener.BeginContact = function (contactPtr) {}
+    listener.BeginContact = (contactPtr) => {
+      let contact = Box2D.wrapPointer(contactPtr, Box2D.b2Contact)
+      let a = contact.GetFixtureA()
+      let b = contact.GetFixtureB()
+
+      // Contact ended with the Ring
+      if(this.ring.fixture == a || this.ring.fixture == b){
+        this.playerEnts.forEach(player => {
+          if(player.fixture == a || player.fixture == b){
+            player.in = true
+          }
+        })
+      }
+    }
+
+
     listener.PreSolve = function (contactPtr, manifoldPtr) {}
     listener.PostSolve = function (contactPtr, contactImpulsePtr) {}
 
@@ -50,20 +74,9 @@ export default class KingSystem extends BaseSystem {
   onEntityAdded(entity){
     this.entities.push(entity)
     if(entity.constructor.name == "Player"){
-      this.players.push(entity)
+      this.playerEnts.push(entity)
     } else {
       this.ring = entity
     }
-    this.initContactListener()
-  }
-
-  onEntityRemoved(entity){
-    this.entities.splice(this.entities.indexOf(entity), 1)
-  }
-
-  update(){
-    this.entities.forEach(entity => {
-
-    })
-  }
+   }
 }

@@ -27,6 +27,8 @@ export default class SumoSystem extends BaseSystem {
     this.players = cfg.players
     this.playersOut = 0
     this.endGame = endGame
+
+    this.initContactListener()
   }
 
   initContactListener(){
@@ -78,7 +80,6 @@ export default class SumoSystem extends BaseSystem {
     } else {
       this.ring = entity
     }
-    this.initContactListener()
   }
 
   awardPoints(entity, points){

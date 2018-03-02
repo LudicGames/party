@@ -51,7 +51,7 @@ export default class KingScreen extends Screen {
     // Camera
     this.cameraSystem = new BaseSystem(true, 5, (delta)=>{
       this.camera.draw(this.$app.$context)
-      this.camera.drawAxes(this.$app.$context)
+      // this.camera.drawAxes(this.$app.$context)
     })
     this.engine.addSystem(this.cameraSystem)
 
@@ -70,9 +70,8 @@ export default class KingScreen extends Screen {
     this.engine.addSystem(this.movementSystem)
 
     // King
-    this.kingSystem = new KingSystem({}, this.world)
+    this.kingSystem = new KingSystem({players: this.players}, this.world)
     this.engine.addSystem(this.kingSystem)
-
   }
 
   initEntities(){
@@ -129,9 +128,7 @@ export default class KingScreen extends Screen {
   }
 
   onTimeUp(){
-    this.finish({
-
-    })
+    this.finish({players: this.players, teams: this.teams})
   }
 
   onDestroy(){
@@ -141,6 +138,6 @@ export default class KingScreen extends Screen {
   update(delta, time){
     this.world.step(delta)
     this.engine.update(delta, time)
-    this.world.drawDebug(true)
+    // this.world.drawDebug(true)
   }
 }
