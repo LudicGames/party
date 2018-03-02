@@ -27,7 +27,7 @@ export default class PartyApp extends LudicApp {
     // this.screenManager.addScreen(new SplashScreen())
 
     // TODO remove
-    this.screenManager.addScreen(new SoccerScreen({
+    this.screenManager.addScreen(new SumoScreen({
       players: [
         {
           color: 'red',

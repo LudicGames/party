@@ -150,14 +150,12 @@ export default class SoccerScreen extends Screen {
     }
   }
 
-
   initUI(){
     // Timer
-    // this.timer = this.$mapMethods(new Timer(this.$app), {
-    //   'onTimeUp': 'onTimeUp',
-    // })
-
-    // this.$app.$ui.$refs.timer = this.timer
+    this.timer = this.$mapMethods(new Timer({time: 60}), {
+      'onTimeUp': 'onTimeUp',
+    })
+    this.$app.$ui.$refs.timer = this.timer
   }
 
   onTimeUp(){
@@ -171,6 +169,6 @@ export default class SoccerScreen extends Screen {
   update(delta, time){
     this.world.step(delta)
     this.engine.update(delta, time)
-    this.world.drawDebug(true)
+    // this.world.drawDebug(true)
   }
 }

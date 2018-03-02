@@ -46,7 +46,6 @@ export default class SumoScreen extends Screen {
     // Camera
     this.cameraSystem = new BaseSystem(true, 5, (delta)=>{
       this.camera.draw(this.$app.$context)
-      this.camera.drawAxes(this.$app.$context)
     })
     this.engine.addSystem(this.cameraSystem)
 
@@ -65,7 +64,7 @@ export default class SumoScreen extends Screen {
     this.engine.addSystem(this.movementSystem)
 
     // Sumo
-    this.sumoSystem = new SumoSystem({}, this.world)
+    this.sumoSystem = new SumoSystem({players: this.players, teams: this.teams}, this.world, this.endGame.bind(this))
     this.engine.addSystem(this.sumoSystem)
   }
 
@@ -74,21 +73,39 @@ export default class SumoScreen extends Screen {
     this.ring = new Ring(0, 0, 8, 'azure', this.world)
     this.engine.addEntity(this.ring)
 
-    // Players TODO make default spawn system
-    this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
-    this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
-    this.engine.addEntity(this.players[0].entity)
-    this.engine.addEntity(this.players[1].entity)
+    // Players
+    if(this.players.length == 2){
+      this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
+      this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+    }
+    if(this.players.length == 3){
+      this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
+      this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+      this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+    }
+    if(this.players.length == 4){
+      this.players[0].entity = new Player({x: -4, y: 0, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
+      this.players[1].entity = new Player({x: 4, y: 0, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+      this.players[2].entity = new Player({x: 0, y: 4, width: 4, height: 2, color: this.players[2].color, world: this.world, gamepadIndex: 1})
+      this.players[3].entity = new Player({x: 0, y: -4, width: 4, height: 2, color: this.players[3].color, world: this.world, gamepadIndex: 1})
+    }
+
+    this.players.forEach((player, index) => {
+      this.engine.addEntity(this.players[index].entity)
+    })
+  }
+
+  endGame(){
+    this.finish({players: this.players, teams: this.teams})
   }
 
   onDestroy(){
-    // console.log('onDestroy - KingScreen')
     // this.$app.$ui.$children = []
   }
 
   update(delta, time){
     this.world.step(delta)
     this.engine.update(delta, time)
-    this.world.drawDebug(true)
+    // this.world.drawDebug(true)
   }
 }

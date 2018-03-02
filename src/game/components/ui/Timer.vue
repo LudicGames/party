@@ -10,10 +10,13 @@ export default LudicComponent.extend({
   data(){
     return {
       ready: false,
-      time: 3,
+      time: 30,
     }
   },
   mounted(){
+    if(this.componentArgs[0].time){
+      this.time = this.componentArgs[0].time
+    }
     setInterval(()=>{
       this.time--
       if(this.time == 0){
