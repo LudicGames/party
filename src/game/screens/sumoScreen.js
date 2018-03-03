@@ -87,27 +87,14 @@ export default class SumoScreen extends Screen {
     if(this.players.length == 3){
       this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
       this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
-      this.players[1].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
+      this.players[2].entity = new Player({x: 4, y: 0.5, width: 2, height: 4, color: this.players[2].color, world: this.world, gamepadIndex: 2})
     }
     if(this.players.length == 4){
       this.players[0].entity = new Player({x: -4, y: 0, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
       this.players[1].entity = new Player({x: 4, y: 0, width: 2, height: 4, color: this.players[1].color, world: this.world, gamepadIndex: 1})
-      this.players[2].entity = new Player({x: 0, y: 4, width: 4, height: 2, color: this.players[2].color, world: this.world, gamepadIndex: 1})
-      this.players[3].entity = new Player({x: 0, y: -4, width: 4, height: 2, color: this.players[3].color, world: this.world, gamepadIndex: 1})
+      this.players[2].entity = new Player({x: 0, y: 4, width: 4, height: 2, color: this.players[2].color, world: this.world, gamepadIndex: 2})
+      this.players[3].entity = new Player({x: 0, y: -4, width: 4, height: 2, color: this.players[3].color, world: this.world, gamepadIndex: 3})
     }
-
-    this.players.forEach((player, index) => {
-      this.player.entity = new Player({
-        x: -4,
-        y: 0,
-        width: 2,
-        height: 4,
-        color: this.players[index].color,
-        world: this.world,
-        gamepadIndex: index,
-      })
-    })
-
 
     this.players.forEach((player, index) => {
       this.engine.addEntity(this.players[index].entity)
