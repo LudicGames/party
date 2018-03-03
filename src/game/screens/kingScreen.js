@@ -20,8 +20,6 @@ export default class KingScreen extends Screen {
     super()
     this.players = data.players
     this.teams = data.teams
-
-    console.log(data)
   }
 
   onAddedToManager(){
@@ -72,7 +70,7 @@ export default class KingScreen extends Screen {
     this.engine.addSystem(this.movementSystem)
 
     // King
-    this.kingSystem = new KingSystem({players: this.players}, this.world)
+    this.kingSystem = new KingSystem({players: this.players, teams: this.teams}, this.world)
     this.engine.addSystem(this.kingSystem)
   }
 
@@ -80,10 +78,6 @@ export default class KingScreen extends Screen {
     // Ring
     this.ring = new Ring(0, 0, 4, 'azure', this.world)
     this.engine.addEntity(this.ring)
-
-    // Walls
-    // this.walls = new Walls(this.camera.width / this.camera.ptm, this.camera.height/ this.camera.ptm, this.world, 'orange', 0)
-    // this.engine.addEntity(this.walls)
 
     // Create Spawn Points
     switch (this.players.length){
@@ -110,19 +104,16 @@ export default class KingScreen extends Screen {
       break
     }
 
-
     // Players
     this.players.forEach((player, index)=>{
-      if(player.ready){
-        player.entity = new Player({x: this.spawnPoints[index].x, y: this.spawnPoints[index].y, width: 1, height: 3, color: player.color, world: this.world, gamepadIndex: index})
-        this.engine.addEntity(player.entity)
-      }
+      player.entity = new Player({x: this.spawnPoints[index].x, y: this.spawnPoints[index].y, width: 1, height: 3, color: player.color, world: this.world, gamepadIndex: index})
+      this.engine.addEntity(player.entity)
     })
   }
 
   initUI(){
     // Timer
-    this.timer = this.$mapMethods(new Timer({time: 60}), {
+    this.timer = this.$mapMethods(new Timer({time: 33}), {
       'onTimeUp': 'onTimeUp',
     })
 
@@ -134,6 +125,7 @@ export default class KingScreen extends Screen {
   }
 
   onDestroy(){
+    this.engine.destroy()
     delete this.$app.$ui.$refs.timer
   }
 

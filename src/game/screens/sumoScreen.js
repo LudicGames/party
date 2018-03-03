@@ -78,6 +78,7 @@ export default class SumoScreen extends Screen {
 
     this.engine.addEntity(this.ring)
 
+
     // Players
     if(this.players.length == 2){
       this.players[0].entity = new Player({x: -4, y: 0.5, width: 2, height: 4, color: this.players[0].color, world: this.world, gamepadIndex: 0})
@@ -94,6 +95,19 @@ export default class SumoScreen extends Screen {
       this.players[2].entity = new Player({x: 0, y: 4, width: 4, height: 2, color: this.players[2].color, world: this.world, gamepadIndex: 1})
       this.players[3].entity = new Player({x: 0, y: -4, width: 4, height: 2, color: this.players[3].color, world: this.world, gamepadIndex: 1})
     }
+
+    this.players.forEach((player, index) => {
+      this.player.entity = new Player({
+        x: -4,
+        y: 0,
+        width: 2,
+        height: 4,
+        color: this.players[index].color,
+        world: this.world,
+        gamepadIndex: index,
+      })
+    })
+
 
     this.players.forEach((player, index) => {
       this.engine.addEntity(this.players[index].entity)

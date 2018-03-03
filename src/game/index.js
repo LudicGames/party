@@ -25,56 +25,56 @@ export default class PartyApp extends LudicApp {
     ]
 
     // Start on the SplashScreen
-    this.screenManager.addScreen(new SplashScreen())
+    // this.screenManager.addScreen(new SplashScreen())
 
-    // this.screenManager.addScreen(new KingScreen({
-    //   players: [
-    //     {
-    //       color: 'red',
-    //       ready: true,
-    //       score: 0,
-    //     },
-    //     {
-    //       color: 'blue',
-    //       ready: true,
-    //       score: 30,
-    //     },
-    //     {
-    //       color: 'green',
-    //       ready: true,
-    //       score: 10,
-    //     },
-    //     {
-    //       color: 'yellow',
-    //       ready: true,
-    //       score: 0,
-    //     }
-    //   ],
-    //   teams: [
-    //     {
-    //       color: 'red',
-    //       players: [
-    //         {
-    //           score: 20,
-    //         },
-    //         {
-    //           score: 30,
-    //         },
-    //       ]
-    //     },
-    //     {
-    //       color: 'green',
-    //       players: [
-    //         {
-    //           score: 20,
-    //         },
-    //         {
-    //           score: 60,
-    //         },
-    //       ]
-    //     }
-    //   ],
-    // }))
+    this.screenManager.addScreen(new KingScreen({
+      players: [
+        {
+          color: 'red',
+          ready: true,
+          score: 0,
+        },
+        {
+          color: 'red',
+          ready: true,
+          score: 30,
+        },
+        {
+          color: 'green',
+          ready: true,
+          score: 10,
+        },
+        {
+          color: 'green',
+          ready: true,
+          score: 0,
+        }
+      ],
+      teams: [
+        {
+          color: 'red',
+          players: [
+            {
+              score: 20,
+            },
+            {
+              score: 30,
+            },
+          ]
+        },
+        {
+          color: 'green',
+          players: [
+            {
+              score: 20,
+            },
+            {
+              score: 60,
+            },
+          ]
+        }
+      ],
+    }))
   }
 
   onScreenFinished(screen, manager, data){
