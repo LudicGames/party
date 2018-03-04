@@ -1,4 +1,4 @@
-import {Screen, Camera} from 'ludic'
+import {Screen, Camera, AssetManager, AudioController} from 'ludic'
 import {DebugDraw, World} from 'ludic-box2d'
 import {Engine, BaseSystem} from 'ein'
 import Circle from '$entities/circle'
@@ -8,7 +8,16 @@ import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import SumoSystem from '$systems/sumo'
 
-console.log("fuck you ")
+import battle from '$assets/battle.mp3'
+
+AssetManager.setOnAssetsLoadedCallback(()=>{
+  console.log("ON ASETS LOADED")
+})
+
+AssetManager.loadResource('battle', battle, 'audio').then(() => {
+  console.log("LOADED")
+})
+
 
 export default class SumoScreen extends Screen {
   constructor(data){
@@ -114,6 +123,8 @@ export default class SumoScreen extends Screen {
   update(delta, time){
     this.world.step(delta)
     this.engine.update(delta, time)
+
+    AssetManager.step()
     // this.world.drawDebug(true)
   }
 }
