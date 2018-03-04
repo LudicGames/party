@@ -8,6 +8,8 @@ import RenderSystem from '$systems/render'
 import MovementSystem from '$systems/movement'
 import SumoSystem from '$systems/sumo'
 
+console.log("fuck you ")
+
 export default class SumoScreen extends Screen {
   constructor(data){
     super()

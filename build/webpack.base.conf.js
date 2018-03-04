@@ -32,6 +32,7 @@ module.exports = {
       '$ui': resolve('src/game/components/ui'),
       '$systems': resolve('src/game/components/systems'),
       '$entities': resolve('src/game/components/entities'),
+      '$assets': resolve('src/game/assets'),
     },
     modules: [resolve('node_modules'), 'node_modules'],
   },
