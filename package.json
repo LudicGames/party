@@ -10,11 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "box2d": "github:ludic/box2d",
-    "ein": "github:ludic/ein",
-    "ludic": "github:ludic/ludic",
-    "ludic-box2d": "github:ludic/ludic-box2d",
-    "ludic-vue": "github:ludic/ludic-vue",
+    "@ludic/ein": "^1.0.0",
+    "@ludic/ludic": "^0.9.0",
+    "@ludic/ludic-box2d": "^1.0.0",
+    "@ludic/ludic-vue": "^1.0.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
